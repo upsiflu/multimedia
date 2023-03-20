@@ -1,0 +1,8 @@
+{
+    "name": "upsiflu/multimedia",
+    "summary": "Flupsi's interactive media portfolio",
+    "version": "1.0.0",
+    "exposed-modules": [
+        "Multimedia"
+    ]
+}

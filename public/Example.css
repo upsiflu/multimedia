@@ -1,0 +1,330 @@
+.poof+* {
+    animation          : poof .3s;
+    animation-fill-mode: forwards;
+    pointer-events     : none;
+}
+
+.poof {
+    display: inline-block;
+    outline: 2px solid red;
+}
+
+@keyframes poof {
+
+    to {
+        opacity   : 0.1;
+        visibility: hidden;
+        max-height: 0;
+        margin-top: -100%;
+    }
+}
+
+@keyframes come {
+    from {
+        opacity   : 0.1;
+        margin-top: -5rem;
+    }
+}
+
+label,
+section,
+article {
+    animation: come .4s;
+}
+
+fieldset {
+    border: 1px groove currentColor;
+}
+
+fieldset>label {
+    display       : flex;
+    flex-direction: row;
+    align-items   : baseline;
+}
+
+label>input+button {
+    margin-left: 4px;
+    clip-path  : polygon(0 -4px, calc(100% + 4px) -4px, calc(100% + 4px) calc(100% + 4px), 0px calc(100% + 4px));
+}
+
+input:has(+button) {
+    border-right: 0px;
+    margin-right: -4px;
+}
+
+label>span:first-of-type {
+    min-width: 4rem;
+    display  : inline-block;
+}
+
+:not(p) ul {
+    list-style: none;
+    padding   : 0;
+    margin    : 0;
+}
+
+.handle,
+.info,
+.control {
+    border     : 0.5px solid black;
+    padding    : 1rem;
+    flex-grow  : 0;
+    box-sizing : border-box;
+    flex-shrink: 0;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display       : flex;
+    flex-direction: column;
+}
+
+.scene {
+    flex-grow      : 1;
+    background     : black;
+    color          : white;
+    overflow       : auto;
+    scroll-behavior: smooth;
+}
+
+.control {
+    flex-basis: 10rem;
+    background: silver;
+}
+
+
+.info {
+    width     : fit-content;
+    position  : absolute;
+    bottom    : 9rem;
+    max-width : 50%;
+    right     : 1rem;
+    background: greenyellow;
+}
+
+.control:empty {
+    flex-basis: 0;
+}
+
+.info:empty {
+    padding     : 0;
+    border-width: 0;
+}
+
+/*-------------------------------------------*/
+
+
+
+a:link[href] {
+    text-decoration: underline;
+}
+
+button,
+input {
+    background: #bbb;
+    padding   : 2px 10px;
+    border    : 4px #ddd outset;
+    outline   : 4px solid #bababa;
+}
+
+input {
+    border-style: inset;
+}
+
+label>span+input,
+label+button {
+    margin-left: 8px;
+}
+
+input:focus,
+input:hover {
+    background: white;
+}
+
+button:active {
+    border: 4px #ccc inset;
+}
+
+button:focus,
+input:focus {
+    outline: 4px solid orange;
+}
+
+
+a[href][role="switch"] {
+    position       : relative;
+    margin         : 4px 12px;
+    outline-offset : 0.5rem;
+    border-radius  : 1rem;
+    text-decoration: none;
+}
+
+a[href][role="switch"]:focus {
+    outline        : 2px double currentColor;
+    text-decoration: underline;
+}
+
+a[role="switch"]:before {
+    display: inline-block;
+    content: "​";
+    margin : 4px 0;
+
+}
+
+
+body {
+    background: silver
+}
+
+a[role="switch"]:after {
+    transition   : all 0.3s;
+    border-radius: 1.1rem;
+    width        : calc(100% + 1rem);
+    height       : calc(100% + 1rem);
+    position     : absolute;
+    top          : -0.5rem;
+    left         : -0.5rem;
+    display      : block;
+    content      : "​";
+    outline      : 0.5px solid currentColor;
+}
+
+
+
+a[aria-checked="true"]:after,
+a[role="switch"]:active:after {
+    box-shadow: inset 3px 3px currentColor;
+    outline   : 0.5px solid transparent;
+}
+
+
+a[role="switch"]:hover:after {
+    box-shadow: inset -1.5px -1.5px currentColor;
+}
+
+a[aria-checked="true"]:hover:after,
+a[role="switch"]:active:hover:after {
+    box-shadow: inset 1.5px 1.5px currentColor;
+}
+
+.scene a {
+    background: white;
+}
+
+
+
+
+/*-------------------------------------------*/
+/* Application */
+
+:has(> #counter) {
+    padding-bottom: 15rem;
+}
+
+:has(> center-me) {
+    background-color: green;
+}
+
+
+article:focus,
+article:focus-within {
+    outline: 2px dashed AccentColor;
+}
+
+.text.label {
+    font-style: italic;
+}
+
+article {
+    max-width: 23rem;
+    margin   : 2rem auto;
+    padding  : 1rem;
+}
+
+
+#counter {
+    display   : inline;
+    background: linear-gradient(darkolivegreen, darkblue);
+}
+
+#counter p {
+    border          : 2px outset turquoise;
+    background-color: darkslategray;
+    display         : inline-block;
+    box-shadow      : 3px;
+    box-shadow      : 2px 2px 8px 1px black;
+    position        : relative;
+    animation       : 1s infinite alternate slidein;
+    padding         : 1rem;
+    margin          : 1rem;
+}
+
+#counter p:nth-last-child(odd) {
+    border          : 2px outset magenta;
+    background-color: darkmagenta;
+}
+
+#counter p:hover {
+    border: 2px inset silver;
+    cursor: text;
+}
+
+#counter p:first-of-type {
+    animation: 2s appear;
+}
+
+
+@keyframes slidein {
+    from {
+        margin-left : 2rem;
+        margin-right: 0rem;
+    }
+}
+
+@keyframes appear {
+    from {
+        font-size: 0;
+        padding  : 0;
+        margin   : 0;
+    }
+}
+
+*:not(:active) {
+    transition: all 0.3s
+}
+
+
+/*-------------------------------------------*/
+/* Garden */
+
+
+/*-------------------------------------------*/
+/* Features */
+
+.Features label,
+.Features a.paths {
+    display      : inline-block;
+    border-radius: 5px;
+    margin       : 2px 4px 2px 1px;
+    padding      : 2px 8px;
+}
+
+.Features label,
+.Features a.paths:hover {
+    box-shadow: 3px 3px currentColor;
+}
+
+.Features a.paths:focus {
+    outline       : 2px double currentColor;
+    outline-offset: -1.5px;
+}
+
+
+.Features article:target {
+    outline: 10px solid orange;
+}
