@@ -1,4 +1,4 @@
-module Content exposing (Content, Msg, document, init, update, view)
+module Content exposing (Content, Msg, init, update, view)
 
 {-| A /very/ simple blog post with a custom inline element for some cool text formatting.
 
@@ -13,6 +13,7 @@ import Mark
 import Mark.Error
 
 
+init : ( Content, Cmd Msg )
 init =
     ( { source = Nothing }
     , Http.get
@@ -31,23 +32,20 @@ type Msg
 
 
 update : Msg -> Content -> ( Content, Cmd Msg )
-update msg model =
+update msg content =
     case msg of
         GotSrc result ->
             case result of
                 Ok src ->
-                    ( { model | source = Just src }
+                    ( { content | source = Just src }
                     , Cmd.none
                     )
 
-                Err err ->
-                    let
-                        _ =
-                            Debug.log "err" err
-                    in
-                    ( model, Cmd.none )
+                Err _ ->
+                    ( content, Cmd.none )
 
 
+view : Content -> Html msg
 view model =
     case model.source of
         Just source ->
@@ -68,62 +66,25 @@ view model =
                         (viewErrors errors)
 
         Nothing ->
-            Html.text "Source not received yet"
+            Html.text "Loading..."
 
 
+viewErrors : List Mark.Error.Error -> List (Html msg)
 viewErrors errors =
     List.map
         (Mark.Error.toHtml Mark.Error.Light)
         errors
 
 
-stylesheet =
-    """
-@import url('https://fonts.googleapis.com/css?family=EB+Garamond');
-.italic {
-    font-style: italic;
-}
-.bold {
-    font-weight: bold;
-}
-.strike {
-    text-decoration: line-through;
-}
-body {
-    font-family: 'EB Garamond', serif;
-    font-size: 20px;
-    width: 600px;
-    margin-left:auto;
-    margin-right:auto;
-    padding: 48px 0;
-}
-.drop-capital {
-    font-size: 2.95em;
-    line-height: 0.89em;
-    float:left;
-    margin-right: 8px;
-}
-.lede {
-    font-variant: small-caps;
-    margin-left: -15px;
-}
-
-"""
-
-
+document : Mark.Document { body : List (Html a), metadata : { author : String, description : List (Html msg), title : List (Html a) } }
 document =
     Mark.documentWith
         (\meta body ->
-            { metadata = meta
-            , body =
-                Html.node "style" [] [ Html.text stylesheet ]
-                    :: Html.h1 [] meta.title
-                    :: body
+            { body = body
+            , metadata = meta
             }
         )
-        -- We have some required metadata that starts our document.
-        { metadata = metadata
-        , body =
+        { body =
             Mark.manyOf
                 [ header
                 , image
@@ -131,6 +92,7 @@ document =
                 , code
                 , Mark.map (Html.p []) text
                 ]
+        , metadata = metadata
         }
 
 
@@ -138,24 +100,23 @@ document =
 {- Handle Text -}
 
 
+text : Mark.Block (List (Html msg))
 text =
     Mark.textWith
-        { view =
-            \styles string ->
-                viewText styles string
-        , replacements = Mark.commonReplacements
-        , inlines =
+        { inlines =
             [ Mark.annotation "link"
                 (\texts url ->
-                    Html.a [ Attr.href url ] (List.map (applyTuple viewText) texts)
+                    Html.a [ Attr.href url ] (List.map (\( styles, string ) -> viewText styles string) texts)
                 )
                 |> Mark.field "url" Mark.string
             , Mark.verbatim "drop"
                 (\str ->
                     let
+                        drop : String
                         drop =
                             String.left 1 str
 
+                        lede : String
                         lede =
                             String.dropLeft 1 str
                     in
@@ -167,13 +128,14 @@ text =
                         ]
                 )
             ]
+        , replacements = Mark.commonReplacements
+        , view =
+            \styles string ->
+                viewText styles string
         }
 
 
-applyTuple fn ( one, two ) =
-    fn one two
-
-
+viewText : { a | bold : Bool, italic : Bool, strike : Bool } -> String -> Html msg
 viewText styles string =
     if styles.bold || styles.italic || styles.strike then
         Html.span
@@ -193,6 +155,7 @@ viewText styles string =
 {- Handle Metadata -}
 
 
+metadata : Mark.Block { author : String, description : List (Html msg), title : List (Html a) }
 metadata =
     Mark.record "Article"
         (\author description title ->
@@ -211,6 +174,7 @@ metadata =
 {- Handle Blocks -}
 
 
+header : Mark.Block (Html msg)
 header =
     Mark.block "H1"
         (\children ->
@@ -220,6 +184,7 @@ header =
         text
 
 
+image : Mark.Block (Html msg)
 image =
     Mark.record "Image"
         (\src description ->
@@ -236,6 +201,7 @@ image =
         |> Mark.toBlock
 
 
+code : Mark.Block (Html msg)
 code =
     Mark.block "Code"
         (\str ->
@@ -267,6 +233,7 @@ list =
 renderList : Mark.Enumerated (Html msg) -> Html msg
 renderList (Mark.Enumerated enum) =
     let
+        group : List (Html.Attribute msg) -> List (Html msg) -> Html msg
         group =
             case enum.icon of
                 Mark.Bullet ->
