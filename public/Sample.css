@@ -39,17 +39,20 @@
 }
 
 .sample.row> :nth-child(2) {
-    max-width: var(--min-center-column);
+    max-width     : var(--min-center-column);
+    pointer-events: none;
 }
 
-.sample:has(.column:not(:nth-child(2)):hover) img {
-    z-index: -1;
-}
+@media only screen and (max-width: 580px) {
 
-.sample:not(:has(.column:not(:nth-child(2)):hover)) img {
-    z-index: 1;
-}
+    .sample:has(.column:not(:nth-child(2)):hover) img {
+        z-index: -1;
+    }
 
+    .sample:not(:has(.column:not(:nth-child(2)):hover)) img {
+        z-index: 1;
+    }
+}
 
 .sample .markdown {
     position       : relative;
@@ -58,20 +61,20 @@
     justify-content: space-evenly;
 }
 
-.sample.row> :nth-child(3) .markdown>div {
+.sample.row> :nth-child(3)>.markdown>* {
     position : absolute;
     right    : 0;
     min-width: 100%;
 }
 
-.sample.row> :nth-child(1) .markdown>div {
+.sample.row> :nth-child(1)>.markdown>* {
     position  : absolute;
     min-width : 100%;
     text-align: right;
 }
 
-.sample.row .markdown>div {
-    --stroke-color: white;
+.sample.row>*>.markdown>* {
+    --stroke-color: rgba(255, 255, 255, .1);
     --stroke-width: 1px;
     text-shadow   : var(--stroke-width) 0 0 var(--stroke-color),
         calc(var(--stroke-width) * -1) 0 0 var(--stroke-color),
@@ -81,6 +84,7 @@
     font-weight: bold;
     color      : red;
 }
+
 
 .markdown p {
     padding: 0;
@@ -93,4 +97,34 @@
 
 .right .before {
     flex-grow: 0;
+}
+
+.sample.row>.column>.markdown>a[role="switch"] {
+    text-decoration: none;
+}
+
+.sample.row>.column>.markdown>a[role="switch"]>span {
+    border    : 3px outset #ed3;
+    outline   : 0.5px solid black;
+    background: #cb3;
+    color     : darkblue;
+    padding   : .05em;
+}
+
+.sample.row>.column>.markdown>a[role="switch"][aria-checked="true"]>span {
+    border    : 3px inset #b90;
+    background: #a80;
+}
+
+.sample.row>.column>.markdown>a[role="switch"]:active>span {
+    border    : 3px inset #a80;
+    background: #970;
+}
+
+.sample.row>.column>.markdown>a[role="switch"]+div.markdown {
+    transform : translate(0.6rem, 1.4rem);
+    outline   : 1.5px double black;
+    background: rgb(255 255 200);
+    z-index   : 6;
+    text-align: initial;
 }

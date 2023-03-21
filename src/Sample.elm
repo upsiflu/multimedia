@@ -1,4 +1,4 @@
-module Sample exposing (Sample(..), Ui, list, markdown, view)
+module Sample exposing (LegendPart(..), Sample(..), Ui, list, markdown, view)
 
 import Html exposing (Html)
 import Html.Attributes as Attr
@@ -20,12 +20,43 @@ type alias Ui =
 
 type Sample
     = Diagram
-        { left : Ui
+        { left : Legend
         , filename : String
         , alt : String
-        , right : Ui
-        , bottom : Ui
+        , right : Legend
+        , bottom : Legend
         }
+
+
+type alias Legend =
+    List LegendPart
+
+
+type LegendPart
+    = Md String
+    | More String Legend
+    | Mixed Legend
+
+
+viewLegend : Legend -> Ui
+viewLegend =
+    List.concatMap
+        (\part ->
+            case part of
+                Md str ->
+                    Ui.html ( "", markdown str )
+
+                More summary details ->
+                    Restrictive.toggle summary |> Ui.with Scene (viewLegend details) |> Ui.wrap (\dropdown -> [ ( "", Keyed.node "div" [ Attr.class "markdown" ] dropdown ) ])
+
+                Mixed legend ->
+                    viewLegend legend
+        )
+
+
+sanitize : String -> String
+sanitize =
+    String.replace " " "-" >> String.replace "\u{00A0}" "-"
 
 
 list : List String -> Ui
@@ -76,7 +107,7 @@ view sample =
                     ( alt, Html.img [ Attr.title alt, Attr.src filename ] [] )
             in
             Ui.wrap (flex "sample row")
-                (Ui.wrap (addBeforeAndAfter >> flex "column left") left
-                    ++ Ui.wrap (flex "column") (Ui.html image ++ Ui.wrap (flex "row") bottom)
-                    ++ Ui.wrap (addBeforeAndAfter >> flex "column right") right
+                (Ui.wrap (addBeforeAndAfter >> flex "column left") (viewLegend left)
+                    ++ Ui.wrap (flex "column") (Ui.html image ++ Ui.wrap (flex "row") (viewLegend bottom))
+                    ++ Ui.wrap (addBeforeAndAfter >> flex "column right") (viewLegend right)
                 )

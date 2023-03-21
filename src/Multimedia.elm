@@ -12,12 +12,12 @@ module Multimedia exposing
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Keyed as Keyed
-import Restrictive exposing (Application, application)
+import Restrictive as Restrictive exposing (Application, application)
 import Restrictive.Layout
 import Restrictive.Layout.Region exposing (Aspect(..))
 import Restrictive.State
 import Restrictive.Ui as Ui
-import Sample exposing (Sample)
+import Sample exposing (LegendPart(..), Sample)
 
 
 type alias Ui =
@@ -165,11 +165,11 @@ items =
         mySample : Sample
         mySample =
             Sample.Diagram
-                { left = Sample.list [ "Lucha\u{00A0}Lugar", "vide0club", "Hologram" ]
+                { left = [ More "ⓘ Lucha\u{00A0}Lugar" [ Md "Description" ], Md "vide0club", Md "Hologram" ]
                 , filename = "build/shell.jpg"
                 , alt = "Through webs of affinity, informal conversations and experiments, we research and build shells, and invite fellow activists for mentoring and mutual workshops. Our traces are shared in zines."
-                , right = Sample.list [ "are.na channel", "workshops", "ShellXhibition (upcoming)", "ShellScape Navigator", "Congress Website (2021)", "Mentoring protocol", "instagram channel", "Boundary Layer Definition" ]
-                , bottom = Sample.list [ "Resources", "Discourse", "Art", "Commons", "Academia", "Funding", "Imaginaries", "Public\u{00A0}Spaces", "Infrastructure" ]
+                , right = [ Md "are.na channel", Md "workshops", Md "ShellXhibition (upcoming)", Md "ShellScape Navigator", Md "Congress Website (2021)", Md "Mentoring protocol", Md "instagram channel", Md "Boundary Layer Definition" ]
+                , bottom = [ Md "Resources", Md "Discourse", Md "Art", Md "Commons", Md "Academia", Md "Funding", Md "Imaginaries", Md "Public\u{00A0}Spaces", Md "Infrastructure" ]
                 }
     in
     [ { flag = "Shell"
