@@ -18,8 +18,6 @@ customElements.define(
     connectedCallback() {
       console.log("connectedCallback", this);
 
-      this.parentElement.tabIndex = "0";
-
       let options = {
         rootMargin: "40% 49% 59% 49%",
         threshold: 0.9
@@ -30,6 +28,13 @@ customElements.define(
           if (entry.isIntersecting) {
             console.log("SELF OBSERVED ", entry.target, this.parentElement)
             this.parentElement?.focus({ preventScroll: true });
+            if ('URLSearchParams' in window) {
+              var searchParams = new URLSearchParams(window.location.search);
+              if (searchParams.get("foo") != this.flag) {
+                searchParams.set("foo", this.flag);
+                window.location.search = searchParams.toString();
+              }
+            }
           }
         });
       };
@@ -43,7 +48,7 @@ customElements.define(
 
 
     static get observedAttributes() {
-      return ["increment"];
+      return ["flag"];
     }
   }
 );

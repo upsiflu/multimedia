@@ -1,0 +1,33 @@
+:root {
+    --column: 32rem;
+}
+
+@media only screen and (min-width: 481px) {
+    :root {
+        font-size: 15px
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    :root {
+        font-size: calc(100vw / 480 * 15);
+    }
+}
+
+:root {
+    --unit: 4rem;
+}
+
+img {
+    width: 100%;
+}
+
+.scene>ul {
+    list-style-type: none;
+    margin         : 0;
+    padding        : 0;
+}
+
+body {
+    margin: 0
+}

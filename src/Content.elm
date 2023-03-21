@@ -87,6 +87,8 @@ document =
         { body =
             Mark.manyOf
                 [ header
+                , info
+                , eyebrow
                 , image
                 , list
                 , code
@@ -179,6 +181,26 @@ header =
     Mark.block "H1"
         (\children ->
             Html.h1 []
+                children
+        )
+        text
+
+
+info : Mark.Block (Html msg)
+info =
+    Mark.block "Info"
+        (\children ->
+            Html.section []
+                children
+        )
+        text
+
+
+eyebrow : Mark.Block (Html msg)
+eyebrow =
+    Mark.block "Eyebrow"
+        (\children ->
+            Html.span [ Attr.class "eyebrow" ]
                 children
         )
         text

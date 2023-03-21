@@ -1,0 +1,96 @@
+.row {
+    display       : flex;
+    flex-direction: row;
+    flex-wrap     : wrap;
+}
+
+.column:nth-child(2) .row {
+    gap            : 1rem;
+    justify-content: space-evenly;
+    width          : 100%;
+}
+
+.column {
+    display       : flex;
+    flex-direction: column;
+    align-self    : stretch;
+}
+
+.row,
+.column {
+    align-content: space-around;
+    align-items  : stretch
+}
+
+.row>*,
+.column>* {
+    flex-grow: 1;
+}
+
+:root {
+    --min-center-column: calc(var(--column) - 4rem)
+}
+
+.sample.row> :nth-child(1),
+.sample.row> :nth-child(3) {
+    max-width : calc((100vw - var(--min-center-column)) / 2);
+    z-index   : 0;
+    background: silver;
+}
+
+.sample.row> :nth-child(2) {
+    max-width: var(--min-center-column);
+}
+
+.sample:has(.column:not(:nth-child(2)):hover) img {
+    z-index: -1;
+}
+
+.sample:not(:has(.column:not(:nth-child(2)):hover)) img {
+    z-index: 1;
+}
+
+
+.sample .markdown {
+    position       : relative;
+    display        : flex;
+    flex-direction : column;
+    justify-content: space-evenly;
+}
+
+.sample.row> :nth-child(3) .markdown>div {
+    position : absolute;
+    right    : 0;
+    min-width: 100%;
+}
+
+.sample.row> :nth-child(1) .markdown>div {
+    position  : absolute;
+    min-width : 100%;
+    text-align: right;
+}
+
+.sample.row .markdown>div {
+    --stroke-color: white;
+    --stroke-width: 1px;
+    text-shadow   : var(--stroke-width) 0 0 var(--stroke-color),
+        calc(var(--stroke-width) * -1) 0 0 var(--stroke-color),
+        0 var(--stroke-width) 0 var(--stroke-color),
+        0 calc(var(--stroke-width) * -1) 0 var(--stroke-color);
+    background : silver;
+    font-weight: bold;
+    color      : red;
+}
+
+.markdown p {
+    padding: 0;
+    margin : 0;
+}
+
+.left .before {
+    flex-grow: 0;
+}
+
+.right .before {
+    flex-grow: 0;
+}
