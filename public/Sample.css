@@ -103,20 +103,29 @@
     text-decoration: none;
 }
 
-.sample.row>.column>.markdown>a[role="switch"]>span {
-    border    : 3px outset #ed3;
-    outline   : 0.5px solid black;
-    background: #cb3;
-    color     : darkblue;
-    padding   : .05em;
+.sample.row>.column>.markdown>a[role="switch"]>div {
+    border       : 3px outset #ed3;
+    outline      : 0.5px solid black;
+    background   : #dc3;
+    color        : darkblue;
+    padding      : 0 .05em;
+    white-space  : nowrap;
+    border-radius: 2px;
+    display      : inline
 }
 
-.sample.row>.column>.markdown>a[role="switch"][aria-checked="true"]>span {
-    border    : 3px inset #b90;
-    background: #a80;
+.sample.row>.column>.markdown>a[role="switch"]>div>div,
+.sample.row>.column>.markdown>a[role="switch"]>div>div>p {
+    display: inline;
 }
 
-.sample.row>.column>.markdown>a[role="switch"]:active>span {
+.sample.row>.column>.markdown>a[role="switch"][aria-checked="true"]>div {
+    border    : 3px inset #cb0;
+    background: #ba0;
+}
+
+
+.sample.row>.column>.markdown>a[role="switch"]:active>div {
     border    : 3px inset #a80;
     background: #970;
 }
@@ -127,4 +136,15 @@
     background: rgb(255 255 200);
     z-index   : 6;
     text-align: initial;
+    padding   : .2rem .5rem;
+    min-width : min-content;
+    max-width : min(var(--column), calc(100% - 1rem));
+}
+
+.left a[role="switch"]+div.markdown {
+    right: 0;
+}
+
+.dropdown {
+    display: inline-block;
 }

@@ -1,21 +1,15 @@
-module Sample exposing (LegendPart(..), Sample(..), Ui, list, markdown, view)
+module Sample exposing (Legend, LegendPart(..), Sample(..), markdown, view)
 
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Keyed as Keyed
 import Markdown.Parser as Markdown
 import Markdown.Renderer
-import Restrictive exposing (Application, application)
-import Restrictive.Layout
+import Restrictive
 import Restrictive.Layout.Region exposing (Aspect(..))
-import Restrictive.State
+import Restrictive.State exposing (Flag)
 import Restrictive.Ui as Ui
-
-
-type alias Ui =
-    Ui.Ui
-        Aspect
-        ( String, Html () )
+import Ui exposing (Ui)
 
 
 type Sample
@@ -34,7 +28,7 @@ type alias Legend =
 
 type LegendPart
     = Md String
-    | More String Legend
+    | More Flag String Legend
     | Mixed Legend
 
 
@@ -46,24 +40,15 @@ viewLegend =
                 Md str ->
                     Ui.html ( "", markdown str )
 
-                More summary details ->
-                    Restrictive.toggle summary |> Ui.with Scene (viewLegend details) |> Ui.wrap (\dropdown -> [ ( "", Keyed.node "div" [ Attr.class "markdown" ] dropdown ) ])
+                More flag summary details ->
+                    Ui.toggle [ markdown summary ] flag
+                        |> Ui.with Scene (viewLegend details)
+                        |> Ui.wrap (\dropdown -> [ ( "", Keyed.node "div" [ Attr.class "dropdown" ] dropdown ) ])
 
                 Mixed legend ->
                     viewLegend legend
+                        |> Ui.wrap (\children -> [ ( "", Keyed.node "div" [ Attr.class "mixed markdown" ] children ) ])
         )
-
-
-sanitize : String -> String
-sanitize =
-    String.replace " " "-" >> String.replace "\u{00A0}" "-"
-
-
-list : List String -> Ui
-list =
-    List.map markdown
-        >> List.indexedMap (\i -> Tuple.pair (String.fromInt i))
-        >> Ui.foliage
 
 
 markdown : String -> Html msg
