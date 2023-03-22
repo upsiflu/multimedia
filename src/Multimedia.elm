@@ -12,26 +12,15 @@ module Multimedia exposing
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Keyed as Keyed
-import Restrictive as Restrictive exposing (Application, application)
+import Restrictive exposing (Application, application)
+import Restrictive.Get
 import Restrictive.Layout
-import Restrictive.Layout.Region exposing (Aspect(..))
-import Restrictive.State
+import Restrictive.Layout.Region as Region exposing (Aspect(..))
+import Restrictive.Mask
+import Restrictive.State exposing (Flag)
 import Restrictive.Ui as Ui
 import Sample exposing (LegendPart(..), Sample)
-
-
-type alias Ui =
-    Ui.Ui
-        Aspect
-        ( String, Html Msg )
-
-
-type alias Document =
-    Restrictive.Document Aspect ( String, Html Msg )
-
-
-type alias Msg =
-    ()
+import Ui exposing (Ui)
 
 
 type alias Item =
@@ -87,7 +76,7 @@ capillos!
 certe, haurit manu. [Ventura Achille](http://www.devolenti.net/canoro.php)
 admovit, non ut tempto violas est ego pater; fit probavit iaculi Ophiusiaque
 inque. Conlectae est premebat subsunt. Dum ad adusque sol sub vini, quod: per
-sanguine, recludit posuisti: Trinacris Sibyllae.
+guine, recludit posuisti: Trinacris Sibyllae.
 
 ## 5 Tamquam novus
 
@@ -135,7 +124,7 @@ viewItem { flag, category, title, handle, description, sample, info } =
         |> Ui.with Info (Ui.foliage (List.indexedMap (\i -> Tuple.pair (String.fromInt i)) info))
 
 
-view : List Item -> Document
+view : List Item -> Ui.Document
 view items_ =
     let
         showTab : String -> Ui -> Ui
@@ -165,8 +154,8 @@ items =
         mySample : Sample
         mySample =
             Sample.Diagram
-                { left = [ More "ⓘ Lucha\u{00A0}Lugar" [ Md "Description" ], Md "vide0club", Md "Hologram" ]
-                , filename = "build/shell.jpg"
+                { left = [ Mixed [ Md "Incipit", More "Lucha" "`ⓘ` Lucha\u{00A0}Lugar" [ Md "Description and here we have a very very long description... _so long in fact it will definitely span several lines, perhaps many..._" ], Md "Excipit" ], Md "vide0club", Md "Hologram" ]
+                , filename = "diagram/shell.jpg"
                 , alt = "Through webs of affinity, informal conversations and experiments, we research and build shells, and invite fellow activists for mentoring and mutual workshops. Our traces are shared in zines."
                 , right = [ Md "are.na channel", Md "workshops", Md "ShellXhibition (upcoming)", Md "ShellScape Navigator", Md "Congress Website (2021)", Md "Mentoring protocol", Md "instagram channel", Md "Boundary Layer Definition" ]
                 , bottom = [ Md "Resources", Md "Discourse", Md "Art", Md "Commons", Md "Academia", Md "Funding", Md "Imaginaries", Md "Public\u{00A0}Spaces", Md "Infrastructure" ]
