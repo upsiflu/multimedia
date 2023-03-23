@@ -4,7 +4,7 @@
     flex-wrap     : wrap;
 }
 
-.column:nth-child(2) .row {
+.column.center .row {
     gap            : 1rem;
     justify-content: space-evenly;
     width          : 100%;

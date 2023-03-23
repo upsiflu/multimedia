@@ -154,18 +154,35 @@ items =
         mySample : Sample
         mySample =
             Sample.Diagram
-                { left = [ Mixed [ Md "Incipit", More "Lucha" "`ⓘ` Lucha\u{00A0}Lugar" [ Md "Description and here we have a very very long description... _so long in fact it will definitely span several lines, perhaps many..._" ], Md "Excipit" ], Md "vide0club", Md "Hologram" ]
+                { left =
+                    [ [ Md "Incipit"
+                      , More "`ⓘ` Lucha\u{00A0}Lugar"
+                            [ Md "Description and here we have a very very long description... _so long in fact it will definitely span several lines, perhaps many..._"
+                            , More """Click me! I am 
+                            
+ - several 
+ - lines 
+ - long""" [ Md "Incipit" ]
+                            , Md "Ciaou!"
+                            ]
+                      , Md "Excipit"
+                      ]
+                    , [ Md "vide0club" ]
+                    , [ Md "Hologram" ]
+                    ]
                 , filename = "diagram/shell.jpg"
                 , alt = "Through webs of affinity, informal conversations and experiments, we research and build shells, and invite fellow activists for mentoring and mutual workshops. Our traces are shared in zines."
-                , right = [ Md "are.na channel", Md "workshops", Md "ShellXhibition (upcoming)", Md "ShellScape Navigator", Md "Congress Website (2021)", Md "Mentoring protocol", Md "instagram channel", Md "Boundary Layer Definition" ]
-                , bottom = [ Md "Resources", Md "Discourse", Md "Art", Md "Commons", Md "Academia", Md "Funding", Md "Imaginaries", Md "Public\u{00A0}Spaces", Md "Infrastructure" ]
+                , right = [ [ Md "are.na channel" ], [ Md "workshops" ], [ Md "ShellXhibition (upcoming)" ], [ Md "ShellScape Navigator" ], [ Md "Congress Website (2021)" ], [ Md "Mentoring protocol" ], [ Md "instagram channel" ], [ Md "Boundary Layer Definition" ] ]
+                , bottom = [ [ Md "Resources" ], [ Md "Discourse" ], [ Md "Art" ], [ Md "Commons" ], [ Md "Academia" ], [ Md "Funding" ], [ Md "Imaginaries" ], [ Md "Public\u{00A0}Spaces" ], [ Md "Infrastructure" ] ]
                 }
     in
     [ { flag = "Shell"
       , category = "Project across many media"
       , title = "Shell"
       , handle = [ Html.text "🐚" ]
-      , description = (Sample.markdown >> Tuple.pair "description" >> Ui.html) """Since 2020, we are organising [Congresses and Symposiums](https://ShellCongress.com), curate [a news channel](https://instagram.com/ShellCongress) and a [collection of traces and reflections](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy) and [navigate the ShellScapes](https://gather.town/app/5Wp6ebk3fOGv9Uuo/SHELL). The following diagram shows how our collective shell grew to tackle all sorts of media surfaces. Click the yellow links to learn more about our activities."""
+      , description =
+            (Sample.markdown >> Html.div [] >> Tuple.pair "description" >> Ui.html)
+                """Since 2020, we are organising [Congresses and Symposiums](https://ShellCongress.com), curate [a news channel](https://instagram.com/ShellCongress) and a [collection of traces and reflections](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy) and [navigate the ShellScapes](https://gather.town/app/5Wp6ebk3fOGv9Uuo/SHELL). The following diagram shows how our collective shell grew to tackle all sorts of media surfaces. Click the pink links to learn more about our activities."""
       , sample = mySample
       , info = []
       }

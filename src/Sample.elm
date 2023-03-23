@@ -14,11 +14,11 @@ import Ui exposing (Ui)
 
 type Sample
     = Diagram
-        { left : Legend
+        { left : List Legend
         , filename : String
         , alt : String
-        , right : Legend
-        , bottom : Legend
+        , right : List Legend
+        , bottom : List Legend
         }
 
 
@@ -28,8 +28,7 @@ type alias Legend =
 
 type LegendPart
     = Md String
-    | More Flag String Legend
-    | Mixed Legend
+    | More String Legend
 
 
 viewLegend : Legend -> Ui
@@ -38,34 +37,28 @@ viewLegend =
         (\part ->
             case part of
                 Md str ->
-                    Ui.html ( "", markdown str )
+                    Ui.html ( "", Html.div [] (markdown str) )
 
-                More flag summary details ->
-                    Ui.toggle [ markdown summary ] flag
-                        |> Ui.with Scene (viewLegend details)
-                        |> Ui.wrap (\dropdown -> [ ( "", Keyed.node "div" [ Attr.class "dropdown" ] dropdown ) ])
-
-                Mixed legend ->
-                    viewLegend legend
-                        |> Ui.wrap (\children -> [ ( "", Keyed.node "div" [ Attr.class "mixed markdown" ] children ) ])
+                More summary details ->
+                    Ui.html ( "", Html.div [ Attr.class "summary", Attr.tabindex 0 ] (markdown summary) )
+                        ++ Ui.wrap (\popup -> [ ( "", Keyed.node "span" [ Attr.class "popup", Attr.tabindex 0 ] popup ) ]) (viewLegend details)
+                        |> Ui.wrap (\dropdown -> [ ( "", Keyed.node "span" [ Attr.class "dropdown" ] dropdown ) ])
         )
 
 
-markdown : String -> Html msg
+markdown : String -> List (Html msg)
 markdown markdownInput =
-    Html.div [ Attr.class "markdown" ]
-        [ case
-            markdownInput
-                |> Markdown.parse
-                |> Result.mapError deadEndsToString
-                |> Result.andThen (\ast -> Markdown.Renderer.render Markdown.Renderer.defaultHtmlRenderer ast)
-          of
-            Ok rendered ->
-                Html.div [] rendered
+    case
+        markdownInput
+            |> Markdown.parse
+            |> Result.mapError deadEndsToString
+            |> Result.andThen (\ast -> Markdown.Renderer.render Markdown.Renderer.defaultHtmlRenderer ast)
+    of
+        Ok rendered ->
+            rendered
 
-            Err errors ->
-                Html.text errors
-        ]
+        Err errors ->
+            [ Html.text errors ]
 
 
 deadEndsToString deadEnds =
@@ -90,9 +83,13 @@ view sample =
                 image : ( String, Html msg )
                 image =
                     ( alt, Html.img [ Attr.title alt, Attr.src filename ] [] )
+
+                wrapLegend : List Legend -> Ui
+                wrapLegend =
+                    List.concatMap (viewLegend >> Ui.wrap (\legend -> [ ( "", Keyed.node "div" [ Attr.class "legend" ] legend ) ]))
             in
             Ui.wrap (flex "sample row")
-                (Ui.wrap (addBeforeAndAfter >> flex "column left") (viewLegend left)
-                    ++ Ui.wrap (flex "column") (Ui.html image ++ Ui.wrap (flex "row") (viewLegend bottom))
-                    ++ Ui.wrap (addBeforeAndAfter >> flex "column right") (viewLegend right)
+                (Ui.wrap (addBeforeAndAfter >> flex "column left") (wrapLegend left)
+                    ++ Ui.wrap (flex "column center") (Ui.html image ++ Ui.wrap (flex "row") (wrapLegend bottom))
+                    ++ Ui.wrap (addBeforeAndAfter >> flex "column right") (wrapLegend right)
                 )

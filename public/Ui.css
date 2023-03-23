@@ -1,0 +1,73 @@
+.dropdown {
+    position: relative;
+}
+
+.dropdown>.summary {
+    /* Make sure to give it a tabindex=1 attribute so it's focusable */
+    background   : #ff7777;
+    color        : darkblue;
+    white-space  : nowrap;
+    border-radius: 0.5px;
+    display      : inline;
+    outline      : 3px solid #ff7777;
+    cursor       : pointer;
+}
+
+.dropdown>.summary:active {
+    outline-width: 4px;
+}
+
+.dropdown>.summary>p {
+    display: inline;
+}
+
+.dropdown>.summary:focus,
+.dropdown>.summary:focus-within,
+.dropdown>.summary:active {
+    filter       : invert(1);
+    background   : yellow;
+    outline-color: yellow;
+}
+
+.dropdown:not(:focus-within)>.summary~* {
+    opacity       : 0;
+    pointer-events: none;
+    filter        : blur(2px)
+}
+
+.dropdown>.summary~* {
+    position     : absolute;
+    border       : 0.5px solid currentColor;
+    background   : rgb(250, 240, 70);
+    padding      : 0 0.2rem;
+    box-shadow   : 6px 6px currentColor;
+    min-width    : 100%;
+    width        : max-content;
+    max-width    : 12rem;
+    border-radius: 2px;
+    transition   : all .2s;
+    left         : -3px;
+    top          : 1.3rem;
+}
+
+/*********************/
+
+.bevelled.yellow {
+    border    : 3px outset #ed3;
+    outline   : 0.5px solid black;
+    background: #dc3;
+}
+
+.bevelled.yellow:active {
+    border    : 3px outset #ed3;
+    outline   : 0.5px solid black;
+    background: #dc3;
+    border    : 3px inset #cb0;
+    background: #ba0;
+}
+
+.bevelled.yellow .summary:focus,
+.bevelled.yellow .summary:focus-within {
+    border    : 3px inset #cb0;
+    background: #ba0;
+}
