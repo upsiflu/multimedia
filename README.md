@@ -1,6 +1,7 @@
-# Examples
+# Flupsi's Interactive Media Portfolio
 
-Includes [Simon Lydell's amazing elm-watch](https://github.com/lydell/elm-watch) for live coding; derived from [this example](https://github.com/lydell/elm-watch/tree/main/example).
+An ever-changing showcase of my recent experiments and works in web, collage and engaging experience between the media.
+
 
 
 **Install the live server:**
@@ -31,3 +32,6 @@ Live server: [garden.localhost:8001](http://garden.localhost:8001)
 ----
 
 **Credits**: See https://github.com/lydell/elm-watch/tree/main/example for a list of libraries used.
+
+- Includes [Simon Lydell's amazing elm-watch](https://github.com/lydell/elm-watch) for live coding; derived from [this example](https://github.com/lydell/elm-watch/tree/main/example).
+- Makes use of https://github.com/dillonkearns/elm-markdown for formatting
