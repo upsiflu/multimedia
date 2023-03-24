@@ -13,10 +13,8 @@ import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Keyed as Keyed
 import Restrictive exposing (Application, application)
-import Restrictive.Get
 import Restrictive.Layout
-import Restrictive.Layout.Region as Region exposing (Aspect(..))
-import Restrictive.Mask
+import Restrictive.Layout.Region exposing (Aspect(..))
 import Restrictive.State exposing (Flag)
 import Restrictive.Ui as Ui
 import Sample exposing (LegendPart(..), Sample)
@@ -110,34 +108,6 @@ pervia, euntis?
 """
 
 
-viewItem : Item -> Ui
-viewItem { flag, category, title, handle, description, sample, info } =
-    (List.concat >> Ui.ul flag)
-        [ Ui.html ( "category", Html.span [ Attr.class "category" ] [ Html.text category ] )
-        , Ui.html ( "title", Html.h1 [] [ Html.text title ] )
-        , Ui.handle (List.indexedMap (\i -> Tuple.pair (String.fromInt i)) handle)
-        , description
-        , Sample.view sample
-
-        --, Ui.html ( "observe center", Html.node "focus-when-in-center" [ Attr.attribute "flag" flag ] [] )
-        ]
-        |> Ui.with Info (Ui.foliage (List.indexedMap (\i -> Tuple.pair (String.fromInt i)) info))
-
-
-view : List Item -> Ui.Document
-view items_ =
-    let
-        showTab : String -> Ui -> Ui
-        showTab str contents =
-            Restrictive.toggle (String.replace " " "-" str)
-                |> Ui.with Scene contents
-    in
-    { body = List.concatMap viewItem items_
-    , layout = Restrictive.Layout.withClass "Multimedia"
-    , title = "Restrictive Ui feature test"
-    }
-
-
 {-| -}
 main : Application (List Item) ()
 main =
@@ -172,13 +142,23 @@ items =
                     ]
                 , filename = "diagram/shell.jpg"
                 , alt = "Through webs of affinity, informal conversations and experiments, we research and build shells, and invite fellow activists for mentoring and mutual workshops. Our traces are shared in zines."
-                , right = [ [ Md "are.na channel" ], [ Md "workshops" ], [ Md "ShellXhibition (upcoming)" ], [ Md "ShellScape Navigator" ], [ Md "Congress Website (2021)" ], [ Md "Mentoring protocol" ], [ Md "instagram channel" ], [ Md "Boundary Layer Definition" ] ]
+                , right = [ [ Md "are.na channel" ], [ Md "workshops" ], [ Md "ShellXhibition (upcoming)", More "Hello" [ Md "ShellXhibition (upcoming)", More "And here we have a _long_ one" [ Md "jkhs lkhj lksjh lkjh" ] ] ], [ Md "ShellScape Navigator" ], [ Md "Congress Website (2021)" ], [ Md "Mentoring protocol" ], [ Md "instagram channel" ], [ Md "Boundary Layer Definition" ] ]
                 , bottom = [ [ Md "Resources" ], [ Md "Discourse" ], [ Md "Art" ], [ Md "Commons" ], [ Md "Academia" ], [ Md "Funding" ], [ Md "Imaginaries" ], [ Md "Public\u{00A0}Spaces" ], [ Md "Infrastructure" ] ]
                 }
     in
     [ { flag = "Shell"
       , category = "Project across many media"
-      , title = "Shell"
+      , title = "Gmhtrty y _urkutr_"
+      , handle = [ Html.text "🐚" ]
+      , description =
+            (Sample.markdown >> Html.div [] >> Tuple.pair "description" >> Ui.html)
+                """Since 2020, we are organising [Congresses and Symposiums](https://ShellCongress.com "You can read more here | Here we have all the description"), curate [a news channel](https://instagram.com/ShellCongress) and a [collection of traces and reflections](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy) and [navigate the ShellScapes](https://gather.town/app/5Wp6ebk3fOGv9Uuo/SHELL). The following diagram shows how our collective shell grew to tackle all sorts of media surfaces. Click the pink links to learn more about our activities."""
+      , sample = mySample
+      , info = []
+      }
+    , { flag = "SecondThing"
+      , category = "Project across many media"
+      , title = "Shell Process"
       , handle = [ Html.text "🐚" ]
       , description =
             (Sample.markdown >> Html.div [] >> Tuple.pair "description" >> Ui.html)
@@ -187,3 +167,31 @@ items =
       , info = []
       }
     ]
+
+
+viewItem : Item -> Ui
+viewItem { flag, category, title, handle, description, sample, info } =
+    (List.concat >> Ui.ul flag)
+        [ Ui.html ( "category", Html.span [ Attr.class "category" ] [ Html.text category ] )
+        , Ui.wrap (\h -> [ ( "anchor", Html.a [ Attr.href ("#" ++ flag), Attr.id flag ] [ Keyed.node "h1" [] h ] ) ]) (List.concatMap Ui.html (Sample.markdown title |> List.map (Tuple.pair "")))
+        , Ui.handle (List.indexedMap (\i -> Tuple.pair (String.fromInt i)) handle)
+        , description
+        , Sample.view sample
+
+        --, Ui.html ( "observe center", Html.node "focus-when-in-center" [ Attr.attribute "flag" flag ] [] )
+        ]
+        |> Ui.with Info (Ui.foliage (List.indexedMap (\i -> Tuple.pair (String.fromInt i)) info))
+
+
+view : List Item -> Ui.Document
+view items_ =
+    let
+        showTab : String -> Ui -> Ui
+        showTab str contents =
+            Restrictive.toggle (String.replace " " "-" str)
+                |> Ui.with Scene contents
+    in
+    { body = List.concatMap viewItem items_ ++ (Sample.markdown >> List.concatMap (Tuple.pair "" >> Ui.html)) markdownBody
+    , layout = Restrictive.Layout.withClass "Multimedia"
+    , title = "Restrictive Ui feature test"
+    }

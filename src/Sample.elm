@@ -4,7 +4,7 @@ import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Keyed as Keyed
 import Markdown.Parser as Markdown
-import Markdown.Renderer
+import Markdown.Renderer exposing (defaultHtmlRenderer)
 import Restrictive
 import Restrictive.Layout.Region exposing (Aspect(..))
 import Restrictive.State exposing (Flag)
@@ -37,13 +37,41 @@ viewLegend =
         (\part ->
             case part of
                 Md str ->
-                    Ui.html ( "", Html.div [] (markdown str) )
+                    List.concatMap (Tuple.pair "" >> Ui.html) (markdown str)
 
                 More summary details ->
                     Ui.html ( "", Html.div [ Attr.class "summary", Attr.tabindex 0 ] (markdown summary) )
-                        ++ Ui.wrap (\popup -> [ ( "", Keyed.node "span" [ Attr.class "popup", Attr.tabindex 0 ] popup ) ]) (viewLegend details)
+                        ++ Ui.wrap (\popup -> [ ( "", Keyed.node "span" [ Attr.class "popup", Attr.tabindex 0 ] popup ) ])
+                            (Ui.html ( "", Html.node "keep-inside" [] [] ) ++ viewLegend details)
                         |> Ui.wrap (\dropdown -> [ ( "", Keyed.node "span" [ Attr.class "dropdown" ] dropdown ) ])
         )
+
+
+specialRenderer : Markdown.Renderer.Renderer (Html msg)
+specialRenderer =
+    { defaultHtmlRenderer
+        | link =
+            \link content ->
+                case Maybe.map (String.split " | ") (Debug.log "Link content with |" link.title) of
+                    Just [ simpleTitle ] ->
+                        Html.a
+                            [ Attr.href link.destination
+                            , Attr.title simpleTitle
+                            ]
+                            content
+
+                    Just (summary :: details) ->
+                        Html.span [ Attr.class "dropdown" ]
+                            [ Html.div [ Attr.class "summary", Attr.tabindex 0 ] (markdown summary)
+                            , Html.span [ Attr.class "popup", Attr.tabindex 0 ]
+                                (Html.node "keep-inside" [] []
+                                    :: ("[" ++ String.join " | " details ++ "](" ++ link.destination ++ """ \"""" ++ link.destination ++ """\"""" ++ ")" |> markdown)
+                                )
+                            ]
+
+                    _ ->
+                        Html.a [ Attr.href link.destination ] content
+    }
 
 
 markdown : String -> List (Html msg)
@@ -52,7 +80,7 @@ markdown markdownInput =
         markdownInput
             |> Markdown.parse
             |> Result.mapError deadEndsToString
-            |> Result.andThen (\ast -> Markdown.Renderer.render Markdown.Renderer.defaultHtmlRenderer ast)
+            |> Result.andThen (\ast -> Markdown.Renderer.render specialRenderer ast)
     of
         Ok rendered ->
             rendered
@@ -86,7 +114,7 @@ view sample =
 
                 wrapLegend : List Legend -> Ui
                 wrapLegend =
-                    List.concatMap (viewLegend >> Ui.wrap (\legend -> [ ( "", Keyed.node "div" [ Attr.class "legend" ] legend ) ]))
+                    List.concatMap (viewLegend >> Ui.wrap (\legend -> [ ( "", Html.div [ Attr.class "legend" ] [ Keyed.node "div" [ Attr.class "legend-container" ] legend ] ) ]))
             in
             Ui.wrap (flex "sample row")
                 (Ui.wrap (addBeforeAndAfter >> flex "column left") (wrapLegend left)

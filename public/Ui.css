@@ -7,18 +7,24 @@
     background   : #ff7777;
     color        : darkblue;
     white-space  : nowrap;
-    border-radius: 0.5px;
+    border-radius: 1.5px;
     display      : inline;
-    outline      : 3px solid #ff7777;
     cursor       : pointer;
 }
 
 .dropdown>.summary:active {
-    outline-width: 4px;
+    outline       : 1px dotted currentColor;
+    outline-offset: -0.5px;
 }
 
 .dropdown>.summary>p {
     display: inline;
+}
+
+.dropdown>.popup>p {
+    display: inline-block;
+    padding: 0.2rem;
+    margin : 0;
 }
 
 .dropdown>.summary:focus,
@@ -38,7 +44,7 @@
 .dropdown>.summary~* {
     position     : absolute;
     border       : 0.5px solid currentColor;
-    background   : rgb(250, 240, 70);
+    background   : rgb(231, 228, 171);
     padding      : 0 0.2rem;
     box-shadow   : 6px 6px currentColor;
     min-width    : 100%;
@@ -46,7 +52,7 @@
     max-width    : 12rem;
     border-radius: 2px;
     transition   : all .2s;
-    left         : -3px;
+    left         : -0.5px;
     top          : 1.3rem;
 }
 
@@ -70,4 +76,69 @@
 .bevelled.yellow .summary:focus-within {
     border    : 3px inset #cb0;
     background: #ba0;
+}
+
+/*********************/
+
+p:only-child,
+.legend-container>p {
+    display: inline;
+}
+
+.legend-container>*:after,
+.legend-container>*:before {
+    content: ' '
+}
+
+/*********************/
+
+.left>.legend,
+.right>.legend {
+    width    : min-content;
+    max-width: 100%;
+}
+
+.left {
+    align-items: flex-end;
+}
+
+@media only screen and (min-width: 800px) {
+
+    .left>.legend,
+    .right>.legend {
+        width: max-content;
+    }
+
+    .left,
+    .right {
+        overflow: visible;
+    }
+}
+
+.left,
+.right {
+    z-index: 0;
+}
+
+
+.right .legend-container {
+    float: right
+}
+
+.center {
+    z-index: 1;
+}
+
+
+
+:has(:is(.left, .right) :is(:hover, :focus))>.center {
+    z-index: -1 !important;
+}
+
+img {
+    pointer-events: none;
+}
+
+.popup {
+    z-index: 8
 }

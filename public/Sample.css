@@ -19,7 +19,6 @@
 .row,
 .column {
     align-content: space-around;
-    align-items  : stretch
 }
 
 .row>*,
@@ -33,9 +32,7 @@
 
 .sample.row> :nth-child(1),
 .sample.row> :nth-child(3) {
-    max-width : calc((100vw - var(--min-center-column)) / 2);
-    z-index   : 0;
-    background: silver;
+    max-width: calc((100vw - var(--min-center-column)) / 2);
 }
 
 .sample.row> :nth-child(2) {
