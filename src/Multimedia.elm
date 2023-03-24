@@ -1,11 +1,8 @@
-module Multimedia exposing
-    ( main
-    , Item
-    )
+module Multimedia exposing (main, Item)
 
 {-|
 
-@docs main
+@docs main, Item
 
 -}
 
@@ -17,12 +14,12 @@ import Restrictive.Layout
 import Restrictive.Layout.Region exposing (Aspect(..))
 import Restrictive.State exposing (Flag)
 import Restrictive.Ui as Ui
-import Sample exposing (LegendPart(..), Sample)
+import Sample exposing (Sample)
 import Ui exposing (Ui)
 
 
 type alias Item =
-    { flag : String
+    { flag : Flag
     , category : String
     , title : String
     , handle : List (Html ())
@@ -125,25 +122,25 @@ items =
         mySample =
             Sample.Diagram
                 { left =
-                    [ [ Md "Incipit"
-                      , More "`ⓘ` Lucha\u{00A0}Lugar"
-                            [ Md "Description and here we have a very very long description... _so long in fact it will definitely span several lines, perhaps many..._"
-                            , More """Click me! I am 
-                            
- - several 
- - lines 
- - long""" [ Md "Incipit" ]
-                            , Md "Ciaou!"
-                            ]
-                      , Md "Excipit"
-                      ]
-                    , [ Md "vide0club" ]
-                    , [ Md "Hologram" ]
+                    [ """<more summary='Hello'>Yo I am here</more>
+Incipit
+<more summary='Lucha\u{00A0}Lugar'>
+Description and here we have a very very long description... _so long in fact it will definitely span several lines, perhaps many..._
+<more summary='Click me! I am
+- several 
+- lines 
+- long'>
+Tada!
+</more>
+Ciaou!!!!</more>
+                            """
+                    , "vide0club"
+                    , "Hologram"
                     ]
                 , filename = "diagram/shell.jpg"
                 , alt = "Through webs of affinity, informal conversations and experiments, we research and build shells, and invite fellow activists for mentoring and mutual workshops. Our traces are shared in zines."
-                , right = [ [ Md "are.na channel" ], [ Md "workshops" ], [ Md "ShellXhibition (upcoming)", More "Hello" [ Md "ShellXhibition (upcoming)", More "And here we have a _long_ one" [ Md "jkhs lkhj lksjh lkjh" ] ] ], [ Md "ShellScape Navigator" ], [ Md "Congress Website (2021)" ], [ Md "Mentoring protocol" ], [ Md "instagram channel" ], [ Md "Boundary Layer Definition" ] ]
-                , bottom = [ [ Md "Resources" ], [ Md "Discourse" ], [ Md "Art" ], [ Md "Commons" ], [ Md "Academia" ], [ Md "Funding" ], [ Md "Imaginaries" ], [ Md "Public\u{00A0}Spaces" ], [ Md "Infrastructure" ] ]
+                , right = [ "are.na channel", "workshops", "ShellXhibition (upcoming)", "ShellXhibition (upcoming)", "And here we have a _long_ one", "ShellScape Navigator", "Congress Website (2021)", "Mentoring protocol", "instagram channel", "Boundary Layer Definition" ]
+                , bottom = [ "Resources", "Discourse", "Art", "Commons", "Academia", "Funding", "Imaginaries", "Public\u{00A0}Spaces", "Infrastructure" ]
                 }
     in
     [ { flag = "Shell"

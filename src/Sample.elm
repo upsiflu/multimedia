@@ -1,8 +1,9 @@
-module Sample exposing (Legend, LegendPart(..), Sample(..), markdown, view)
+module Sample exposing (Sample(..), markdown, view)
 
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Keyed as Keyed
+import Markdown.Html
 import Markdown.Parser as Markdown
 import Markdown.Renderer exposing (defaultHtmlRenderer)
 import Restrictive
@@ -14,37 +15,22 @@ import Ui exposing (Ui)
 
 type Sample
     = Diagram
-        { left : List Legend
+        { left : List String
         , filename : String
         , alt : String
-        , right : List Legend
-        , bottom : List Legend
+        , right : List String
+        , bottom : List String
         }
 
 
-type alias Legend =
-    List LegendPart
-
-
-type LegendPart
-    = Md String
-    | More String Legend
-
-
-viewLegend : Legend -> Ui
-viewLegend =
-    List.concatMap
-        (\part ->
-            case part of
-                Md str ->
-                    List.concatMap (Tuple.pair "" >> Ui.html) (markdown str)
-
-                More summary details ->
-                    Ui.html ( "", Html.div [ Attr.class "summary", Attr.tabindex 0 ] (markdown summary) )
-                        ++ Ui.wrap (\popup -> [ ( "", Keyed.node "span" [ Attr.class "popup", Attr.tabindex 0 ] popup ) ])
-                            (Ui.html ( "", Html.node "keep-inside" [] [] ) ++ viewLegend details)
-                        |> Ui.wrap (\dropdown -> [ ( "", Keyed.node "span" [ Attr.class "dropdown" ] dropdown ) ])
-        )
+viewHtmlLegend summary popup =
+    Html.span [ Attr.class "dropdown" ]
+        [ Html.div [ Attr.class "summary", Attr.tabindex 0 ] summary
+        , Html.span [ Attr.class "popup", Attr.tabindex 0 ]
+            (Html.node "keep-inside" [] []
+                :: popup
+            )
+        ]
 
 
 specialRenderer : Markdown.Renderer.Renderer (Html msg)
@@ -60,17 +46,20 @@ specialRenderer =
                             ]
                             content
 
-                    Just (summary :: details) ->
-                        Html.span [ Attr.class "dropdown" ]
-                            [ Html.div [ Attr.class "summary", Attr.tabindex 0 ] (markdown summary)
-                            , Html.span [ Attr.class "popup", Attr.tabindex 0 ]
-                                (Html.node "keep-inside" [] []
-                                    :: ("[" ++ String.join " | " details ++ "](" ++ link.destination ++ """ \"""" ++ link.destination ++ """\"""" ++ ")" |> markdown)
-                                )
-                            ]
+                    Just (simpleTitle :: details) ->
+                        viewHtmlLegend content
+                            ("[" ++ String.join " | " details ++ "](" ++ link.destination ++ """ \"""" ++ simpleTitle ++ """\"""" ++ ")" |> markdown)
 
                     _ ->
                         Html.a [ Attr.href link.destination ] content
+        , html =
+            Markdown.Html.oneOf
+                [ Markdown.Html.tag "more"
+                    (\summary renderedChildren ->
+                        viewHtmlLegend (markdown summary) renderedChildren
+                    )
+                    |> Markdown.Html.withAttribute "summary"
+                ]
     }
 
 
@@ -112,12 +101,21 @@ view sample =
                 image =
                     ( alt, Html.img [ Attr.title alt, Attr.src filename ] [] )
 
-                wrapLegend : List Legend -> Ui
-                wrapLegend =
-                    List.concatMap (viewLegend >> Ui.wrap (\legend -> [ ( "", Html.div [ Attr.class "legend" ] [ Keyed.node "div" [ Attr.class "legend-container" ] legend ] ) ]))
+                wrapLegends : List String -> Ui
+                wrapLegends =
+                    List.concatMap
+                        (\legend ->
+                            Ui.html
+                                ( ""
+                                , Html.div [ Attr.class "legend" ]
+                                    [ Html.div [ Attr.class "legend-container" ]
+                                        (markdown legend)
+                                    ]
+                                )
+                        )
             in
             Ui.wrap (flex "sample row")
-                (Ui.wrap (addBeforeAndAfter >> flex "column left") (wrapLegend left)
-                    ++ Ui.wrap (flex "column center") (Ui.html image ++ Ui.wrap (flex "row") (wrapLegend bottom))
-                    ++ Ui.wrap (addBeforeAndAfter >> flex "column right") (wrapLegend right)
+                (Ui.wrap (addBeforeAndAfter >> flex "column left") (wrapLegends left)
+                    ++ Ui.wrap (flex "column center") (Ui.html image ++ Ui.wrap (flex "row") (wrapLegends bottom))
+                    ++ Ui.wrap (addBeforeAndAfter >> flex "column right") (wrapLegends right)
                 )
