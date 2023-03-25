@@ -31,20 +31,43 @@ items =
       , title = "Restrictive"
       , description =
             """
-For my smaller SPA projects, I am collecting some abstractions into a UI library. I am going for <more summary="cohesion"> Aiming to concentrate everyting pertaining to a certain type inside its corresponding model. [Read the Wikipedia\u{00A0}article](https://en.wikipedia.org/wiki/Cohesion%28computer_science%29 "Wikipedia article")</more> as opposed to control.
+For my smaller SPA projects, I am collecting some abstractions into a UI library. I am going for <more summary="cohesion"> Aiming to concentrate everyting pertaining to a certain type inside its corresponding model. [Read the Wikipedia\u{00A0}article](https://en.wikipedia.org/wiki/Cohesion%28computer_science%29 "Wikipedia article")</more> and defaults at the expense of control.
+
+- The URL stores the complete UI state. <more summary="_How?_">In contrast to the Elm architecture, `update` and `view` don't receive the URL. Instead, you create Links such as `toggle`, `goTo`, `tab` or `bounce` to differenciate UI (sub)states. This guarantees that when you share a link or your current URL, the receiver will get the same view.</more>
+- The module hierarchy is independent from the layout. <more summary="_How?_">Write `view` functions for your types in the corresponding modules, then give them a place in the global layout. In the diagram above, you can see the default layout with four regions.</more>
 """
       , sample =
             Diagram
                 { left =
-                    []
-                , filename = ""
+                    [ """
+<more summary="`Handle` Region <alternate/>">Tabs, toolbars menus...</more>"""
+                    , """
+<more summary="`Scene` Region <alternate/>">The composition that a user can view, edit and share</more>"""
+                    , "\u{00A0}"
+                    , """
+<more summary="`Control` Region <alternate/>">
+The editing controls are automatically derived from the model (w.i.p.)</more>"""
+                    ]
+                , filename = "restrictive.png"
                 , alt = ""
-                , right = []
-                , bottom = []
+                , right =
+                    [ """
+URL: <url>x.y<more summary="/Comp1#square">`Path` and `Fragment` determine which page to show and which object to focus.</more><more summary="?edit">A `Flag` may reveal the editing controls.</more></url>"""
+                    , """
+<more summary="Toggling the UI state">This eye icon might toggle the visibility of a layer. But since the view-state is kept inside the URL, I don't need to pass messages and Booleans across modules in my `update`.</more>"""
+                    , """"""
+                    , """
+<more summary="Code Cohesion"> A single `view` can span several screen regions. No need to manually pass fragments across modules. This red square is represented as a shape in the `Scene`, its comments are accessible in an `Info` bubble, and its data is editable through the property sheet in the `Control` region.</more>"""
+                    , """"""
+                    , """"""
+                    , """
+<more summary="`Info` Region <alternate/>">
+The editing controls are automatically derived from the model (w.i.p.)</more>"""
+                    ]
+                , bottom = [ """
+<more summary="Progressive Disclosure">By clicking `OK`, you toggle the `edit` flag from the URL, which in turn determines the visibility of the Control Sheet. Such `toggle` links can be nested to implement deep [progressive disclosure](https://www.nngroup.com/articles/progressive-disclosure/).</more>""" ]
                 }
-      , info = """
-- The Url stores the complete UI state. <more summary="_How?_">In contrast to the Elm architecture, `update` and `view` don't receive the URL. Instead, you create Links such as `toggle`, `goTo`, `tab` or `bounce` to add UI state. This guarantees that when you share a link or your current URL, the receiver will get the same view.</more>
-- The module hierarchy is independent from the layout. <more summary="_How?_">Write `view` functions for your types in the corresponding modules, then give them a place in the global layout. In the diagram above, you can see the default layout with four regions.</more>"""
+      , info = """[Visit my `restrictive` github repo](https://github.com/upsiflu/restrictive)"""
       }
     , { flag = "Shell"
       , category = "Project across many media"
@@ -79,9 +102,9 @@ Ciaou!!!!</more>"""
       , info = """
 Since 2020, we are organising 
 [Congresses and Symposiums](https://ShellCongress.com "https://ShellCongress.com | Visit our 2021 congress website to learn more"), 
-curate [a news channel](https://instagram.com/ShellCongress " | Instagram Channel with news and invitations") and 
-a [collection of traces and reflections](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy " | Are.na channel") 
-and [navigate the ShellScapes](https://gather.town/app/5Wp6ebk3fOGv9Uuo/SHELL " | Choose your Avatar and start exploring our interactive surface where we hold international events on gather.town"). The following diagram shows how our collective shell grew to tackle all sorts of media surfaces. Click the pink links to learn more about our activities.
+curate [a news channel](https://instagram.com/ShellCongress " | Instagram stream with news and invitations") and 
+a [collection of traces and reflections](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy "Open in new tab | Browse our Are.na channel") 
+and [navigate the ShellScapes](https://gather.town/app/5Wp6ebk3fOGv9Uuo/SHELL " | Choose your Avatar and start exploring our interactive surface where we hold international events on gather.town"). The following diagram shows how our collective shell grew to tackle all sorts of media surfaces.
 """
       }
     , { flag = "MaT"
@@ -103,25 +126,39 @@ Renae was looking for an immersive experience that would match the topic of 'mov
 But the larges and most interesting task was implementing a content management system with unlimited Undo. My solution is to encode the state as a series of transformations (Actions), where each edit adds to an append-only log. The `view` folds this log into a zipper (a tree with a single open node) and renders it to Html."""
       }
     , { flag = "Glossary"
-      , category = "Research and sketches"
-      , timeframe = "2019—20"
+      , category = "Research"
+      , timeframe = "2018—21"
       , title = "Bodies experiencing virtual spaces"
       , description =
-            """Since 1019, I have been conducting UX experiments with fellow artists and community organizers. How can we navigate and reclaim virtual spaces? What kind of avatar can we become there? How can we meet and organize as hybrid bodies?"""
+            """
+Since 1019, I have been conducting UX experiments with fellow artists and community organizers. How can we navigate and reclaim virtual spaces? What kind of avatar can we become there? How can we meet and organize as hybrid bodies?
+"""
       , sample =
-            Diagram
-                { left = []
-                , filename = "glossary.svg"
-                , alt = "UX research"
-                , right = []
-                , bottom = []
-                }
-      , info = """m"""
+            Sample """
+<carousel>
+
+
+<more summary="![](ux.png)">
+<more summary="![](ux.gif)">
+User interface investigation with Sabrina. Exploring an exhibition she created on the platform ResearchCatalogue.net, we are recording the barriers she encounters as she navigates and edits the multi-media collage. How does my body expand into the boundaries set by the software? Which strategies and tactics help me find agency and discover new possibilities? How does the experience affect my self-image and my self-awareness irl?
+</more>
+</more>
+
+<more summary="![](selfreplacement.jpg)">
+In her workshop “On identities, Other(s) Ours’ cartography” on the final day of the first ShellCongress (2021), Yarinés Suarez invited us to map our many identities and intersection on a shared virtual canvas.
+
+This collage from our zine <more summary="captures identity as a collage of simultaneous media fragments: user interface elements, avatars, video frames, chat messages, multi-user doodles">
+Who is ‘we’, who addresses ‘us’, what is beyond ‘this’ body? Rituals on coded surfaces temporarily change our bodies. Avatars, roles and personas then shellter us from impositions of fixed identity, and reciprocally shellter those who address us from an encounter with the messy mollusc of what’s behind the mask — something that may not ‘really’ exist.</more>
+
+</more>
+
+</carousel>"""
+      , info = """[Read my Glossary of UX concepts &#91;pdf&#93;](UX-Glossary.pdf)"""
       }
     , { flag = "bombast"
       , category = "Multilingual website"
       , timeframe = "2018"
-      , title = "Bombast Duo"
+      , title = "<single-column/>Bombast Duo"
       , description =
             """With performance duo Bombast, I created a website template. Since the clients know HTML, we eschew a CMS or a build system in favor of a straightforward single-page HTML file."""
       , sample =
@@ -140,8 +177,8 @@ After more than five years, this site has never needed maintenance.
       }
     , { flag = "weise"
       , category = "Virtual copy of an interactive artwork"
-      , timeframe = "2018"
-      , title = "Die Weisen"
+      , timeframe = "2017"
+      , title = "<single-column/>Die Weisen"
       , description =
             """With artist Stephanie Hannah, I created a virtual copy of her Aduino-powered speaking suitcase. Click the buttons to hear people interviewed Berlin neighborhoods tell you what they consider a good life (German-language)"""
       , sample =
@@ -169,5 +206,5 @@ view items_ =
     in
     { body = List.concatMap viewItem items_
     , layout = Restrictive.Layout.withClass "Multimedia"
-    , title = "Restrictive Ui feature test"
+    , title = "Flupsi's multimedia portfolio"
     }
