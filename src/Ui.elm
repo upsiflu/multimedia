@@ -58,7 +58,8 @@ viewItem { flag, category, timeframe, title, description, sample, info } =
 
 
 type Sample
-    = Diagram
+    = Sample String
+    | Diagram
         { left : List String
         , filename : String
         , alt : String
@@ -87,7 +88,14 @@ viewSample sample =
 
         image : { a | filename : String, alt : String } -> ( String, Html msg )
         image { alt, filename } =
-            ( alt, Html.img [ Attr.title alt, Attr.src filename ] [] )
+            ( alt
+            , Html.img
+                [ Attr.title alt
+                , Attr.src filename
+                , Attr.attribute "loading" "lazy"
+                ]
+                []
+            )
 
         wrapLegends : List String -> Ui
         wrapLegends =
@@ -103,6 +111,9 @@ viewSample sample =
                 )
     in
     case sample of
+        Sample md ->
+            Ui.html ( "sample", Html.div [ Attr.class "sample" ] (markdown md) )
+
         Diagram ({ left, filename, alt, right, bottom } as config) ->
             Ui.wrap (flex "sample row")
                 (Ui.wrap (addBeforeAndAfter >> flex "column left") (wrapLegends left)
@@ -121,6 +132,7 @@ viewSample sample =
                             ( "inclusion"
                             , Html.iframe
                                 [ Attr.attribute "src" source
+                                , Attr.attribute "loading" "lazy"
                                 ]
                                 []
                             )
@@ -174,7 +186,50 @@ specialRenderer =
                             renderedChildren
                     )
                     |> Markdown.Html.withAttribute "summary"
+                , Markdown.Html.tag "url"
+                    (\renderedChildren ->
+                        Html.span [ Attr.class "url", Attr.title "The URL" ]
+                            renderedChildren
+                    )
+                , Markdown.Html.tag "carousel"
+                    (\renderedChildren ->
+                        Html.div [ Attr.class "carousel" ]
+                            [ Html.div [ Attr.class "scrolling" ]
+                                renderedChildren
+                            ]
+                    )
+                , Markdown.Html.tag "alternate"
+                    (\renderedChildren ->
+                        Html.node "alternate"
+                            []
+                            renderedChildren
+                    )
+                , Markdown.Html.tag "single-column"
+                    (\renderedChildren ->
+                        Html.node "single-column"
+                            []
+                            renderedChildren
+                    )
                 ]
+        , image =
+            \imageInfo ->
+                case imageInfo.title of
+                    Just title ->
+                        Html.img
+                            [ Attr.src imageInfo.src
+                            , Attr.alt imageInfo.alt
+                            , Attr.title title
+                            , Attr.attribute "loading" "lazy"
+                            ]
+                            []
+
+                    Nothing ->
+                        Html.img
+                            [ Attr.src imageInfo.src
+                            , Attr.alt imageInfo.alt
+                            , Attr.attribute "loading" "lazy"
+                            ]
+                            []
     }
 
 
