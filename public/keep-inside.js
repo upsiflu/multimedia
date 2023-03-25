@@ -18,12 +18,15 @@ customElements.define(
         if (bounds.right > window.innerWidth)
           moveBy(-1);
       }
+      const offset = 0 - container.offsetWidth / 2 || 0
+      console.log(offset);
+      container.style.marginInlineStart = offset + "px";
       const moveBy = delta => {
-        container.style.left = (parseInt(container.style.left || "0") + delta) + "px";
+        container.style.marginInlineStart = (parseInt(container.style.marginInlineStart) + delta) + "px";
         window.requestAnimationFrame(adjust);
       }
-      adjust();
       window.addEventListener('resize', () => window.requestAnimationFrame(adjust))
+      container.parentElement?.querySelector(".summary")?.addEventListener("click", () => { console.log("clickiiiii"); window.requestAnimationFrame(adjust) })
     }
 
     static get observedAttributes() {

@@ -2,20 +2,37 @@
     --min-center-column: calc(var(--column) - 4rem)
 }
 
+#Restrictive {
+    --min-center-column: calc(var(--column) / 2 - 4rem)
+}
+
+#Restrictive .center {
+    mix-blend-mode: color-burn;
+    padding-top   : 4rem;
+}
+
+#Restrictive .after {
+    flex-grow: 0
+}
+
+#Restrictive .left {
+    padding-top: 4rem;
+}
+
 .sample {
     margin-top   : 2rem;
     margin-bottom: 2rem;
 }
 
 .sample :is(.left, .right) {
-    max-width: calc((100vw - var(--min-center-column)) / 2);
+    max-width: calc((100% - var(--min-center-column)) / 2);
 }
 
 .sample .center {
     max-width: var(--min-center-column);
 }
 
-.sample .center:not(:has(iframe)) {
+.sample .center>img {
     pointer-events: none;
 }
 
@@ -27,7 +44,10 @@
     justify-content: space-evenly;
 }
 
-
+.sample .center .row .legend {
+    max-width: max-content;
+    z-index  : 8;
+}
 
 .markdown p {
     padding: 0;
