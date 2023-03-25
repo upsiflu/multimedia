@@ -1,55 +1,20 @@
-.row {
-    display       : flex;
-    flex-direction: row;
-    flex-wrap     : wrap;
-}
-
-.column.center .row {
-    gap            : 1rem;
-    justify-content: space-evenly;
-    width          : 100%;
-}
-
-.column {
-    display       : flex;
-    flex-direction: column;
-    align-self    : stretch;
-}
-
-.row,
-.column {
-    align-content: space-around;
-}
-
-.row>*,
-.column>* {
-    flex-grow: 1;
-}
-
 :root {
     --min-center-column: calc(var(--column) - 4rem)
 }
 
-.sample.row> :nth-child(1),
-.sample.row> :nth-child(3) {
+.sample {
+    margin-top: 2rem;
+}
+
+.sample :is(.left, .right) {
     max-width: calc((100vw - var(--min-center-column)) / 2);
 }
 
-.sample.row> :nth-child(2) {
+.sample .center {
     max-width     : var(--min-center-column);
     pointer-events: none;
 }
 
-@media only screen and (max-width: 580px) {
-
-    .sample:has(.column:not(:nth-child(2)):hover) img {
-        z-index: -1;
-    }
-
-    .sample:not(:has(.column:not(:nth-child(2)):hover)) img {
-        z-index: 1;
-    }
-}
 
 .sample .markdown {
     position       : relative;
@@ -58,29 +23,6 @@
     justify-content: space-evenly;
 }
 
-.sample.row> :nth-child(3)>.markdown>* {
-    position : absolute;
-    right    : 0;
-    min-width: 100%;
-}
-
-.sample.row> :nth-child(1)>.markdown>* {
-    position  : absolute;
-    min-width : 100%;
-    text-align: right;
-}
-
-.sample.row>*>.markdown>* {
-    --stroke-color: rgba(255, 255, 255, .1);
-    --stroke-width: 1px;
-    text-shadow   : var(--stroke-width) 0 0 var(--stroke-color),
-        calc(var(--stroke-width) * -1) 0 0 var(--stroke-color),
-        0 var(--stroke-width) 0 var(--stroke-color),
-        0 calc(var(--stroke-width) * -1) 0 var(--stroke-color);
-    background : silver;
-    font-weight: bold;
-    color      : red;
-}
 
 
 .markdown p {
@@ -88,60 +30,6 @@
     margin : 0;
 }
 
-.left .before {
+:is(.left, .right) .before {
     flex-grow: 0;
-}
-
-.right .before {
-    flex-grow: 0;
-}
-
-.sample.row>.column>.markdown>a[role="switch"] {
-    text-decoration: none;
-}
-
-.sample.row>.column>.markdown>a[role="switch"]>div {
-    border       : 3px outset #ed3;
-    outline      : 0.5px solid black;
-    background   : #dc3;
-    color        : darkblue;
-    padding      : 0 .05em;
-    white-space  : nowrap;
-    border-radius: 2px;
-    display      : inline
-}
-
-.sample.row>.column>.markdown>a[role="switch"]>div>div,
-.sample.row>.column>.markdown>a[role="switch"]>div>div>p {
-    display: inline;
-}
-
-.sample.row>.column>.markdown>a[role="switch"][aria-checked="true"]>div {
-    border    : 3px inset #cb0;
-    background: #ba0;
-}
-
-
-.sample.row>.column>.markdown>a[role="switch"]:active>div {
-    border    : 3px inset #a80;
-    background: #970;
-}
-
-.sample.row>.column>.markdown>a[role="switch"]+div.markdown {
-    transform : translate(0.6rem, 1.4rem);
-    outline   : 1.5px double black;
-    background: rgb(255 255 200);
-    z-index   : 6;
-    text-align: initial;
-    padding   : .2rem .5rem;
-    min-width : min-content;
-    max-width : min(var(--column), calc(100% - 1rem));
-}
-
-.left a[role="switch"]+div.markdown {
-    right: 0;
-}
-
-.dropdown {
-    display: inline-block;
 }

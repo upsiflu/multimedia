@@ -1,4 +1,4 @@
-module Multimedia exposing (main, Item)
+module Multimedia exposing (main)
 
 {-|
 
@@ -12,21 +12,8 @@ import Html.Keyed as Keyed
 import Restrictive exposing (Application, application)
 import Restrictive.Layout
 import Restrictive.Layout.Region exposing (Aspect(..))
-import Restrictive.State exposing (Flag)
 import Restrictive.Ui as Ui
-import Sample exposing (Sample)
-import Ui exposing (Ui)
-
-
-type alias Item =
-    { flag : Flag
-    , category : String
-    , title : String
-    , handle : List (Html ())
-    , description : Ui
-    , sample : Sample
-    , info : List (Html ())
-    }
+import Ui exposing (Item, Sample(..), Ui, markdown, viewItem)
 
 
 markdownBody =
@@ -117,12 +104,22 @@ main =
 
 items : List Item
 items =
-    let
-        mySample : Sample
-        mySample =
-            Sample.Diagram
+    [ { flag = "Shell"
+      , category = "Project across many media"
+      , timeframe = "2021—"
+      , title = "The Shell"
+      , description =
+            """
+Since 2020, we are organising 
+[Congresses and Symposiums](https://ShellCongress.com "You can read more here | Here we have all the description"), 
+curate [a news channel](https://instagram.com/ShellCongress " | Instagram Channel with news and invitations") and 
+a [collection of traces and reflections](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy " | Are.na channel") 
+and [navigate the ShellScapes](https://gather.town/app/5Wp6ebk3fOGv9Uuo/SHELL " | Choose an Avatar and start exploring our interactive surface where we hold international events on gather.town"). The following diagram shows how our collective shell grew to tackle all sorts of media surfaces. Click the pink links to learn more about our activities."""
+      , sample =
+            Diagram
                 { left =
-                    [ """<more summary='Hello'>Yo I am here</more>
+                    [ """
+<more summary='Hello'>Yo I am here</more>
 Incipit
 <more summary='Lucha\u{00A0}Lugar'>
 Description and here we have a very very long description... _so long in fact it will definitely span several lines, perhaps many..._
@@ -132,52 +129,49 @@ Description and here we have a very very long description... _so long in fact it
 - long'>
 Tada!
 </more>
-Ciaou!!!!</more>
-                            """
+Ciaou!!!!</more>"""
                     , "vide0club"
                     , "Hologram"
                     ]
                 , filename = "diagram/shell.jpg"
                 , alt = "Through webs of affinity, informal conversations and experiments, we research and build shells, and invite fellow activists for mentoring and mutual workshops. Our traces are shared in zines."
-                , right = [ "are.na channel", "workshops", "ShellXhibition (upcoming)", "ShellXhibition (upcoming)", "And here we have a _long_ one", "ShellScape Navigator", "Congress Website (2021)", "Mentoring protocol", "instagram channel", "Boundary Layer Definition" ]
+                , right = [ "are.na channel", "workshops", "ShellXhibition (upcoming)", "ShellXhibition (upcoming)", "<more summary='Yes'>And here we have a _long_ one</more>", "ShellScape Navigator", "Congress Website (2021)", "Mentoring protocol", "instagram channel", "Boundary Layer Definition" ]
                 , bottom = [ "Resources", "Discourse", "Art", "Commons", "Academia", "Funding", "Imaginaries", "Public\u{00A0}Spaces", "Infrastructure" ]
                 }
-    in
-    [ { flag = "Shell"
-      , category = "Project across many media"
-      , title = "Gmhtrty y _urkutr_"
-      , handle = [ Html.text "🐚" ]
-      , description =
-            (Sample.markdown >> Html.div [] >> Tuple.pair "description" >> Ui.html)
-                """Since 2020, we are organising [Congresses and Symposiums](https://ShellCongress.com "You can read more here | Here we have all the description"), curate [a news channel](https://instagram.com/ShellCongress) and a [collection of traces and reflections](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy) and [navigate the ShellScapes](https://gather.town/app/5Wp6ebk3fOGv9Uuo/SHELL). The following diagram shows how our collective shell grew to tackle all sorts of media surfaces. Click the pink links to learn more about our activities."""
-      , sample = mySample
       , info = []
       }
     , { flag = "SecondThing"
       , category = "Project across many media"
+      , timeframe = "2021—"
       , title = "Shell Process"
-      , handle = [ Html.text "🐚" ]
       , description =
-            (Sample.markdown >> Html.div [] >> Tuple.pair "description" >> Ui.html)
-                """Since 2020, we are organising [Congresses and Symposiums](https://ShellCongress.com), curate [a news channel](https://instagram.com/ShellCongress) and a [collection of traces and reflections](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy) and [navigate the ShellScapes](https://gather.town/app/5Wp6ebk3fOGv9Uuo/SHELL). The following diagram shows how our collective shell grew to tackle all sorts of media surfaces. Click the pink links to learn more about our activities."""
-      , sample = mySample
+            """Since 2020, we are organising [Congresses and Symposiums](https://ShellCongress.com), curate [a news channel](https://instagram.com/ShellCongress) and a [collection of traces and reflections](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy) and [navigate the ShellScapes](https://gather.town/app/5Wp6ebk3fOGv9Uuo/SHELL). The following diagram shows how our collective shell grew to tackle all sorts of media surfaces. Click the pink links to learn more about our activities."""
+      , sample =
+            Diagram
+                { left =
+                    [ """
+<more summary='Hello'>Yo I am here</more>
+Incipit
+<more summary='Lucha\u{00A0}Lugar'>
+Description and here we have a very very long description... _so long in fact it will definitely span several lines, perhaps many..._
+<more summary='Click me! I am
+- several 
+- lines 
+- long'>
+Tada!
+</more>
+Ciaou!!!!</more>"""
+                    , "vide0club"
+                    , "Hologram"
+                    ]
+                , filename = "diagram/shell.jpg"
+                , alt = "Through webs of affinity, informal conversations and experiments, we research and build shells, and invite fellow activists for mentoring and mutual workshops. Our traces are shared in zines."
+                , right = [ "are.na channel", "workshops", "ShellXhibition (upcoming)", "ShellXhibition (upcoming)", "<more summary='Yes'>And here we have a _long_ one</more>", "ShellScape Navigator", "Congress Website (2021)", "Mentoring protocol", "instagram channel", "Boundary Layer Definition" ]
+                , bottom = [ "Resources", "Discourse", "Art", "Commons", "Academia", "Funding", "Imaginaries", "Public\u{00A0}Spaces", "Infrastructure" ]
+                }
       , info = []
       }
     ]
-
-
-viewItem : Item -> Ui
-viewItem { flag, category, title, handle, description, sample, info } =
-    (List.concat >> Ui.ul flag)
-        [ Ui.html ( "category", Html.span [ Attr.class "category" ] [ Html.text category ] )
-        , Ui.wrap (\h -> [ ( "anchor", Html.a [ Attr.href ("#" ++ flag), Attr.id flag ] [ Keyed.node "h1" [] h ] ) ]) (List.concatMap Ui.html (Sample.markdown title |> List.map (Tuple.pair "")))
-        , Ui.handle (List.indexedMap (\i -> Tuple.pair (String.fromInt i)) handle)
-        , description
-        , Sample.view sample
-
-        --, Ui.html ( "observe center", Html.node "focus-when-in-center" [ Attr.attribute "flag" flag ] [] )
-        ]
-        |> Ui.with Info (Ui.foliage (List.indexedMap (\i -> Tuple.pair (String.fromInt i)) info))
 
 
 view : List Item -> Ui.Document
@@ -188,7 +182,7 @@ view items_ =
             Restrictive.toggle (String.replace " " "-" str)
                 |> Ui.with Scene contents
     in
-    { body = List.concatMap viewItem items_ ++ (Sample.markdown >> List.concatMap (Tuple.pair "" >> Ui.html)) markdownBody
+    { body = List.concatMap viewItem items_ ++ (markdown >> List.concatMap (Tuple.pair "" >> Ui.html)) markdownBody
     , layout = Restrictive.Layout.withClass "Multimedia"
     , title = "Restrictive Ui feature test"
     }

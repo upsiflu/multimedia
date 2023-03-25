@@ -1,11 +1,13 @@
-module Ui exposing (Document, Ui, toggle)
+module Ui exposing (Document, Item, Sample(..), Ui, markdown, toggle, viewItem)
 
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Keyed as Keyed
-import Restrictive as Restrictive exposing (Application, application)
+import Markdown.Html
+import Markdown.Parser as Markdown
+import Markdown.Renderer exposing (defaultHtmlRenderer)
+import Restrictive as Restrictive
 import Restrictive.Get
-import Restrictive.Layout
 import Restrictive.Layout.Region as Region exposing (Aspect(..))
 import Restrictive.Mask
 import Restrictive.State exposing (Flag)
@@ -20,6 +22,150 @@ type alias Ui =
 
 type alias Document =
     Restrictive.Document Aspect ( String, Html () )
+
+
+
+------- Types ------
+
+
+type alias Item =
+    { flag : Flag
+    , category : String
+    , timeframe : String
+    , title : String
+    , description : String
+    , sample : Sample
+    , info : List (Html ())
+    }
+
+
+viewItem : Item -> Ui
+viewItem { flag, category, timeframe, title, description, sample, info } =
+    (List.concat >> Ui.ul flag)
+        [ Ui.html ( "category", Html.span [ Attr.class "category" ] [ Html.text category ] )
+        , Ui.html ( "timeframe", Html.span [ Attr.class "timeframe" ] (markdown timeframe) )
+        , Ui.wrap (\h -> [ ( "anchor", Html.a [ Attr.href ("#" ++ flag), Attr.id flag ] [ Keyed.node "h1" [] h ] ) ]) (List.concatMap Ui.html (markdown title |> List.map (Tuple.pair "")))
+        , (markdown >> Html.div [ Attr.class "description" ] >> Tuple.pair "description" >> Ui.html) description
+        , viewSample sample
+
+        --, Ui.html ( "observe center", Html.node "focus-when-in-center" [ Attr.attribute "flag" flag ] [] )
+        ]
+        |> Ui.with Info (Ui.foliage (List.indexedMap (\i -> Tuple.pair (String.fromInt i)) info))
+
+
+type Sample
+    = Diagram
+        { left : List String
+        , filename : String
+        , alt : String
+        , right : List String
+        , bottom : List String
+        }
+
+
+viewSample : Sample -> Ui
+viewSample sample =
+    case sample of
+        Diagram { left, filename, alt, right, bottom } ->
+            let
+                addBeforeAndAfter : List ( String, Html msg ) -> List ( String, Html msg )
+                addBeforeAndAfter items =
+                    ( "before", Html.div [ Attr.class "before" ] [] ) :: items ++ [ ( "after", Html.div [ Attr.class "after" ] [] ) ]
+
+                flex : String -> List ( String, Html msg ) -> List ( String, Html msg )
+                flex direction items =
+                    [ ( "", Keyed.node "div" [ Attr.class direction ] items ) ]
+
+                image : ( String, Html msg )
+                image =
+                    ( alt, Html.img [ Attr.title alt, Attr.src filename ] [] )
+
+                wrapLegends : List String -> Ui
+                wrapLegends =
+                    List.concatMap
+                        (\legend ->
+                            Ui.html
+                                ( ""
+                                , Html.div [ Attr.class "legend" ]
+                                    [ Html.div [ Attr.class "legend-container" ]
+                                        (markdown legend)
+                                    ]
+                                )
+                        )
+            in
+            Ui.wrap (flex "sample row")
+                (Ui.wrap (addBeforeAndAfter >> flex "column left") (wrapLegends left)
+                    ++ Ui.wrap (flex "column center") (Ui.html image ++ Ui.wrap (flex "row") (wrapLegends bottom))
+                    ++ Ui.wrap (addBeforeAndAfter >> flex "column right") (wrapLegends right)
+                )
+
+
+
+------- Markdown -------
+
+
+specialRenderer : Markdown.Renderer.Renderer (Html msg)
+specialRenderer =
+    { defaultHtmlRenderer
+        | link =
+            \link content ->
+                case Maybe.map (String.split " | ") (Debug.log "Link content with |" link.title) of
+                    Just [ simpleTitle ] ->
+                        Html.a
+                            [ Attr.href link.destination
+                            , Attr.title simpleTitle
+                            ]
+                            content
+
+                    Just (simpleTitle :: details) ->
+                        viewHtmlLegend content
+                            (Html.a
+                                [ Attr.class "popup"
+                                , Attr.tabindex 0
+                                , Attr.href link.destination
+                                ]
+                            )
+                            ("[" ++ String.join " | " details ++ "](" ++ link.destination ++ """ \"""" ++ simpleTitle ++ """\"""" ++ ")" |> markdown)
+
+                    _ ->
+                        Html.a [ Attr.href link.destination ] content
+        , html =
+            Markdown.Html.oneOf
+                [ Markdown.Html.tag "more"
+                    (\summary renderedChildren ->
+                        viewHtmlLegend (markdown summary)
+                            (Html.span [ Attr.class "popup", Attr.tabindex 0 ])
+                            renderedChildren
+                    )
+                    |> Markdown.Html.withAttribute "summary"
+                ]
+    }
+
+
+markdown : String -> List (Html msg)
+markdown markdownInput =
+    case
+        markdownInput
+            |> Markdown.parse
+            |> Result.mapError (List.map Markdown.deadEndToString >> String.join "\n")
+            |> Result.andThen (\ast -> Markdown.Renderer.render specialRenderer ast)
+    of
+        Ok rendered ->
+            rendered
+
+        Err errors ->
+            [ Html.text errors ]
+
+
+viewHtmlLegend : List (Html msg) -> (List (Html msg) -> Html msg) -> List (Html msg) -> Html msg
+viewHtmlLegend summary wrapper popup =
+    Html.span [ Attr.class "dropdown" ]
+        [ Html.div [ Attr.class "summary", Attr.tabindex 0 ] summary
+        , wrapper
+            (Html.node "keep-inside" [] []
+                :: popup
+            )
+        ]
 
 
 

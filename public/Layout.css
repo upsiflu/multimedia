@@ -2,6 +2,11 @@
     --column: 32rem;
 }
 
+
+body {
+    font-family: 'EB Garamond', serif;
+}
+
 @media only screen and (min-width: 481px) {
     :root {
         font-size: 15px
@@ -24,17 +29,80 @@ img {
 
 .scene>ul {
     list-style-type: none;
-    margin         : 0;
-    padding        : 0;
+    margin         : 8rem 0;
+    padding        : 2px;
+    overflow       : hidden;
 }
+
+.scene>ul>:not(.sample) {
+    max-width: 45rem;
+    margin   : auto;
+}
+
 
 body {
     margin: 0
 }
 
 /*****************/
+
 h1,
 h2,
 h3 {
-    margin-left: -0.05em;
+    margin-left   : -0.05em;
+    letter-spacing: -0.01em;
+}
+
+a:has(:is(h1, h2, h3)):not(:hover) {
+    text-decoration: none;
+}
+
+.category,
+.timeframe {
+    font-style: italic;
+}
+
+.scene>ul>:is(.category, .timeframe):not(:first-of-type) {
+    margin-left: 1rem;
+}
+
+:is(.category, .timeframe)+a>h1 {
+    margin-block-start: 0;
+}
+
+/*****************/
+
+pre {
+    max-width: 100%;
+    overflow : auto;
+}
+
+
+/*****************/
+
+.row {
+    display       : flex;
+    flex-direction: row;
+}
+
+.column.center .row {
+    gap            : 1rem;
+    justify-content: space-evenly;
+    width          : 100%;
+}
+
+.column {
+    display       : flex;
+    flex-direction: column;
+    align-self    : stretch;
+}
+
+.row,
+.column {
+    align-content: space-around;
+}
+
+.row>*,
+.column>* {
+    flex-grow: 1;
 }
