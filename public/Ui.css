@@ -5,11 +5,15 @@
 .dropdown>.summary {
     /* Make sure to give it a tabindex=1 attribute so it's focusable */
     background   : #ff9c8d;
-    color        : darkblue;
     white-space  : nowrap;
     border-radius: 1.5px;
     display      : inline;
     cursor       : pointer;
+}
+
+a:visited:not(:active) {
+    color                : blue;
+    text-decoration-color: #a0f;
 }
 
 .dropdown>.summary:active {
@@ -41,6 +45,10 @@
     filter        : blur(2px)
 }
 
+a.popup:not(:hover) a {
+    text-decoration: none;
+}
+
 .dropdown>.summary~* {
     position     : absolute;
     border       : 0.5px solid currentColor;
@@ -49,12 +57,16 @@
     box-shadow   : 6px 6px currentColor;
     min-width    : 100%;
     width        : max-content;
-    max-width    : 12rem;
+    max-width    : 24rem;
     border-radius: 2px;
     transition   : all .2s;
     left         : -0.5px;
-    top          : 1.1rem;
+    top          : 1.25em;
     z-index      : 8
+}
+
+.sample .dropdown>.summary~* {
+    max-width: 12rem;
 }
 
 /*********************/

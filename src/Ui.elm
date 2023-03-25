@@ -35,7 +35,7 @@ type alias Item =
     , title : String
     , description : String
     , sample : Sample
-    , info : List (Html ())
+    , info : String
     }
 
 
@@ -47,10 +47,14 @@ viewItem { flag, category, timeframe, title, description, sample, info } =
         , Ui.wrap (\h -> [ ( "anchor", Html.a [ Attr.href ("#" ++ flag), Attr.id flag ] [ Keyed.node "h1" [] h ] ) ]) (List.concatMap Ui.html (markdown title |> List.map (Tuple.pair "")))
         , (markdown >> Html.div [ Attr.class "description" ] >> Tuple.pair "description" >> Ui.html) description
         , viewSample sample
+        , (markdown >> Html.div [ Attr.class "info" ] >> Tuple.pair "info" >> Ui.html) info
 
         --, Ui.html ( "observe center", Html.node "focus-when-in-center" [ Attr.attribute "flag" flag ] [] )
         ]
-        |> Ui.with Info (Ui.foliage (List.indexedMap (\i -> Tuple.pair (String.fromInt i)) info))
+
+
+
+--|> Ui.with Info (Ui.foliage (List.indexedMap (\i -> Tuple.pair (String.fromInt i)) (markdown info)))
 
 
 type Sample
@@ -61,41 +65,67 @@ type Sample
         , right : List String
         , bottom : List String
         }
+    | Video
+    | Inclusion
+        { left : List String
+        , source : String
+        , right : List String
+        , bottom : List String
+        }
 
 
 viewSample : Sample -> Ui
 viewSample sample =
-    case sample of
-        Diagram { left, filename, alt, right, bottom } ->
-            let
-                addBeforeAndAfter : List ( String, Html msg ) -> List ( String, Html msg )
-                addBeforeAndAfter items =
-                    ( "before", Html.div [ Attr.class "before" ] [] ) :: items ++ [ ( "after", Html.div [ Attr.class "after" ] [] ) ]
+    let
+        addBeforeAndAfter : List ( String, Html msg ) -> List ( String, Html msg )
+        addBeforeAndAfter items =
+            ( "before", Html.div [ Attr.class "before" ] [] ) :: items ++ [ ( "after", Html.div [ Attr.class "after" ] [] ) ]
 
-                flex : String -> List ( String, Html msg ) -> List ( String, Html msg )
-                flex direction items =
-                    [ ( "", Keyed.node "div" [ Attr.class direction ] items ) ]
+        flex : String -> List ( String, Html msg ) -> List ( String, Html msg )
+        flex direction items =
+            [ ( "", Keyed.node "div" [ Attr.class direction ] items ) ]
 
-                image : ( String, Html msg )
-                image =
-                    ( alt, Html.img [ Attr.title alt, Attr.src filename ] [] )
+        image : { a | filename : String, alt : String } -> ( String, Html msg )
+        image { alt, filename } =
+            ( alt, Html.img [ Attr.title alt, Attr.src filename ] [] )
 
-                wrapLegends : List String -> Ui
-                wrapLegends =
-                    List.concatMap
-                        (\legend ->
-                            Ui.html
-                                ( ""
-                                , Html.div [ Attr.class "legend" ]
-                                    [ Html.div [ Attr.class "legend-container" ]
-                                        (markdown legend)
-                                    ]
-                                )
+        wrapLegends : List String -> Ui
+        wrapLegends =
+            List.concatMap
+                (\legend ->
+                    Ui.html
+                        ( ""
+                        , Html.div [ Attr.class "legend" ]
+                            [ Html.div [ Attr.class "legend-container" ]
+                                (markdown legend)
+                            ]
                         )
-            in
+                )
+    in
+    case sample of
+        Diagram ({ left, filename, alt, right, bottom } as config) ->
             Ui.wrap (flex "sample row")
                 (Ui.wrap (addBeforeAndAfter >> flex "column left") (wrapLegends left)
-                    ++ Ui.wrap (flex "column center") (Ui.html image ++ Ui.wrap (flex "row") (wrapLegends bottom))
+                    ++ Ui.wrap (flex "column center") (Ui.html (image config) ++ Ui.wrap (flex "row") (wrapLegends bottom))
+                    ++ Ui.wrap (addBeforeAndAfter >> flex "column right") (wrapLegends right)
+                )
+
+        Video ->
+            Ui.singleton
+
+        Inclusion ({ left, source, right, bottom } as config) ->
+            Ui.wrap (flex "sample row")
+                (Ui.wrap (addBeforeAndAfter >> flex "column left") (wrapLegends left)
+                    ++ Ui.wrap (flex "column center")
+                        (Ui.html
+                            ( "inclusion"
+                            , Html.iframe
+                                [ Attr.attribute "src" source
+                                ]
+                                []
+                            )
+                            ++ Ui.wrap (flex "row") (wrapLegends bottom)
+                        )
                     ++ Ui.wrap (addBeforeAndAfter >> flex "column right") (wrapLegends right)
                 )
 
@@ -114,6 +144,7 @@ specialRenderer =
                         Html.a
                             [ Attr.href link.destination
                             , Attr.title simpleTitle
+                            , Attr.target "blank_"
                             ]
                             content
 
@@ -123,12 +154,17 @@ specialRenderer =
                                 [ Attr.class "popup"
                                 , Attr.tabindex 0
                                 , Attr.href link.destination
+                                , Attr.target "blank_"
                                 ]
                             )
                             ("[" ++ String.join " | " details ++ "](" ++ link.destination ++ """ \"""" ++ simpleTitle ++ """\"""" ++ ")" |> markdown)
 
                     _ ->
-                        Html.a [ Attr.href link.destination ] content
+                        Html.a
+                            [ Attr.href link.destination
+                            , Attr.target "blank_"
+                            ]
+                            content
         , html =
             Markdown.Html.oneOf
                 [ Markdown.Html.tag "more"

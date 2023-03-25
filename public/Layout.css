@@ -5,6 +5,7 @@
 
 body {
     font-family: 'EB Garamond', serif;
+    padding-top: 12rem;
 }
 
 @media only screen and (min-width: 481px) {
@@ -27,10 +28,18 @@ img {
     width: 100%;
 }
 
+.sample iframe {
+    height    : 44rem;
+    border    : 5px ridge silver;
+    box-shadow: 1em 1em black, -1px -1px white;
+    outline   : 2px outset silver;
+}
+
 .scene>ul {
     list-style-type: none;
-    margin         : 8rem 0;
+    margin         : 0;
     padding        : 2px;
+    padding-bottom : 10rem;
     overflow       : hidden;
 }
 
@@ -60,6 +69,10 @@ a:has(:is(h1, h2, h3)):not(:hover) {
 .category,
 .timeframe {
     font-style: italic;
+}
+
+.description {
+    font-size: 1.4em;
 }
 
 .scene>ul>:is(.category, .timeframe):not(:first-of-type) {

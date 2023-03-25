@@ -3,7 +3,8 @@
 }
 
 .sample {
-    margin-top: 2rem;
+    margin-top   : 2rem;
+    margin-bottom: 2rem;
 }
 
 .sample :is(.left, .right) {
@@ -11,7 +12,10 @@
 }
 
 .sample .center {
-    max-width     : var(--min-center-column);
+    max-width: var(--min-center-column);
+}
+
+.sample .center:not(:has(iframe)) {
     pointer-events: none;
 }
 
