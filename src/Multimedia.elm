@@ -10,7 +10,7 @@ import Restrictive exposing (Application, application)
 import Restrictive.Layout
 import Restrictive.Layout.Region exposing (Aspect(..))
 import Restrictive.Ui as Ui
-import Ui exposing (Item, Sample(..), Ui, markdown, viewItem)
+import Ui exposing (Item, Sample(..), Ui, viewItem)
 
 
 {-| -}
@@ -43,7 +43,8 @@ For my smaller SPA projects, I am collecting some abstractions into a UI library
 <more summary="`Handle` Region <alternate/>">Tabs, toolbars menus...</more>"""
                     , """
 <more summary="`Scene` Region <alternate/>">The composition that a user can view, edit and share</more>"""
-                    , "\u{00A0}"
+                    , """"""
+                    , """"""
                     , """
 <more summary="`Control` Region <alternate/>">
 The editing controls are automatically derived from the model (w.i.p.)</more>"""
@@ -61,8 +62,10 @@ URL: <url>x.y<more summary="/Comp1#square">`Path` and `Fragment` determine which
                     , """"""
                     , """"""
                     , """
-<more summary="`Info` Region <alternate/>">
-The editing controls are automatically derived from the model (w.i.p.)</more>"""
+<more summary="`Info` Region <alternate/>">Toasts, popups...</more>"""
+                    , """"""
+                    , """"""
+                    , """"""
                     ]
                 , bottom = [ """
 <more summary="Progressive Disclosure">By clicking `OK`, you toggle the `edit` flag from the URL, which in turn determines the visibility of the Control Sheet. Such `toggle` links can be nested to implement deep [progressive disclosure](https://www.nngroup.com/articles/progressive-disclosure/).</more>""" ]
@@ -116,14 +119,14 @@ and [navigate the ShellScapes](https://gather.town/app/5Wp6ebk3fOGv9Uuo/SHELL " 
       , sample =
             Video
       , info = """
-Renae was looking for an immersive experience that would match the topic of 'moving across thresholds': traversing fields of arts, critical theory and activism. We decided to build a giant Accordion component where visitors can open and close nested segments. The Tree-Zipper which I had implemented in 2019 was the perfect structure to hold the data. In the implementation process, we had to tackle several challenges:
+[Renae](http://renaeshadler.com/about/ " | Berlin-based choreographer, performer and researcher exploring how we are both shaping and being shaped by our environment &#91;website&#93;") was looking for an immersive experience that would match the topic of 'moving across thresholds': traversing fields of arts, critical theory and activism. We decided to build a giant Accordion component where visitors can open and close nested segments. The Tree-Zipper which I had implemented in 2019 was the perfect structure to hold the data. In the implementation process, we had to tackle several challenges:
 
-- Proper date/time management that would work seamlessly in different timezones meant that the Ui would display local dates while the backend would store UTC.
-- I implemented automatic linking across the segments (for example to connect the articles on events with the corresponding facilitator bios) by auto-generating a dictionary with valid links and fuzzy matching of URL paths.
-- We integrated a Google Drive folder as well as an are.na channel in their own custom elements. Unfortunately, both services have a very limited Api. In contrast, the vimeo Api, an external video cover-image service, and weserv.nl for image preprocessing proved more solid for a deep integration.
-- To match the idea of moving across segments, I implemented fluid animations and transitions in css, adding some custom elements where the elm architecture was too centralistic. 
+- Robust <more summary="date/time management"> The UI would display local dates while the backend would store UTC.</more>
+- <more summary="Fluid animations and transitions in css"> I added custom elements where the centralism of the Elm architecture seemed unnecessary. </more> to match the idea of moving across segments.
+-  Automatic <more summary="linking across the segments"> (for example to connect the articles on events with the corresponding facilitator bios) by auto-generating a dictionary with valid links and fuzzy matching of URL paths.</more>
+- <more summary="Integrating a Google Drive folder as well as an are.na channel"> Unfortunately, both services have a very limited Api. In contrast, the vimeo Api, an external video cover-image service, and weserv.nl for image preprocessing proved more solid for a deep integration.</more> in their own custom elements.
       
-But the larges and most interesting task was implementing a content management system with unlimited Undo. My solution is to encode the state as a series of transformations (Actions), where each edit adds to an append-only log. The `view` folds this log into a zipper (a tree with a single open node) and renders it to Html."""
+But the larges and most interesting task was implementing <more summary="a content management system with unlimited Undo."> My solution is to encode the state as a series of transformations (Actions), where each edit adds to an append-only log. The `view` folds this log into a zipper (a tree with a single open node) and renders it to Html.</more>"""
       }
     , { flag = "Glossary"
       , category = "Research"
@@ -131,7 +134,7 @@ But the larges and most interesting task was implementing a content management s
       , title = "Bodies experiencing virtual spaces"
       , description =
             """
-Since 1019, I have been conducting UX experiments with fellow artists and community organizers. How can we navigate and reclaim virtual spaces? What kind of avatar can we become there? How can we meet and organize as hybrid bodies?
+In various UX experiments with fellow artists and community organizers, we examined: How to navigate and reclaim the platforms? What creative opportunities lie behind the UIs? Which hybrid body shells help us organize collective political action against barriers and policing?
 """
       , sample =
             Sample """
@@ -145,10 +148,10 @@ User interface investigation with Sabrina. Exploring an exhibition she created o
 </more>
 
 <more summary="![](selfreplacement.jpg)">
-In her workshop “On identities, Other(s) Ours’ cartography” on the final day of the first ShellCongress (2021), Yarinés Suarez invited us to map our many identities and intersection on a shared virtual canvas.
+In her workshop “On identities, Other(s) Ours’ cartography” on the final day of the first ShellCongress (2021), [Yarinés Suarez](https://shellcongress.com/?window=Yarin----s-Suarez) invited us to map our many identities and intersection on a shared virtual canvas.
 
 This collage from our zine <more summary="captures identity as a collage of simultaneous media fragments: user interface elements, avatars, video frames, chat messages, multi-user doodles">
-Who is ‘we’, who addresses ‘us’, what is beyond ‘this’ body? Rituals on coded surfaces temporarily change our bodies. Avatars, roles and personas then shellter us from impositions of fixed identity, and reciprocally shellter those who address us from an encounter with the messy mollusc of what’s behind the mask — something that may not ‘really’ exist.</more>
+Who is ‘we’, who addresses ‘us’, what is beyond ‘this’ body? Rituals on coded surfaces temporarily change our bodies. Avatars, roles and personas then shellter us from impositions of fixed identity, and reciprocally shellter those who address us from an encounter with the messy mollusc of what’s behind the mask — something that may not ‘really’ exist.</more>. You can [take a tour of the ShellScape here](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy).
 
 </more>
 
@@ -180,7 +183,7 @@ After more than five years, this site has never needed maintenance.
       , timeframe = "2017"
       , title = "<single-column/>Die Weisen"
       , description =
-            """With artist Stephanie Hannah, I created a virtual copy of her Aduino-powered speaking suitcase. Click the buttons to hear people interviewed Berlin neighborhoods tell you what they consider a good life (German-language)"""
+            """With artist [Stephanie Hannah](https://www.stephaniehanna.de/en/about-en/ " | Here's her website"), I created a virtual copy of her Aduino-powered speaking suitcase. Click the buttons to hear people interviewed Berlin neighborhoods tell you what they consider a good life (German-language)"""
       , sample =
             Inclusion
                 { left = [ "\u{00A0}" ]

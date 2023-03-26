@@ -10,13 +10,13 @@
     cursor       : pointer;
 }
 
-.dropdown+.dropdown>.summary {
+.url .dropdown+.dropdown>.summary {
     background: #ffb5ff;
 }
 
 
 
-.dropdown:has(+.dropdown)>.summary {
+.url .dropdown:has(+.dropdown)>.summary {
     background: #ffd5bd;
 }
 
@@ -65,6 +65,12 @@ a:visited:not(:active) {
     outline-color: yellow;
 }
 
+.popup:has(>.dropdown>.summary>p:only-child>img) {
+    background: #96ff96;
+    padding   : 0;
+    outline   : 0.5px solid #96ff96;
+}
+
 .dropdown:not(:focus-within)>.summary~* {
     opacity       : 0;
     pointer-events: none;
@@ -79,31 +85,23 @@ a.popup:not(:hover) a {
     position     : absolute;
     border       : 0.5px solid currentColor;
     background   : rgb(255, 250, 156);
-    padding      : 0 0.2rem;
-    box-shadow   : 6px 6px currentColor;
+    box-shadow   : 4px 5px currentColor;
     min-width    : 100%;
     width        : max-content;
     max-width    : 24rem;
     border-radius: 2px;
     transition   : all .2s;
     left         : 50%;
-    top          : 1.25em;
+    top          : 1.05em;
+    padding      : .1em 0.2em;
 }
 
+
 .dropdown>.summary:focus~* {
-    position     : absolute;
-    border       : 0.5px solid currentColor;
-    background   : rgb(255, 250, 156);
-    padding      : 0 0.2rem;
-    box-shadow   : 6px 6px currentColor;
-    min-width    : 100%;
-    width        : max-content;
-    max-width    : 24rem;
-    border-radius: 2px;
-    transition   : all .2s;
-    left         : 50%;
-    top          : 1.25em;
-    z-index      : 14
+    padding   : 0 0.2em 0.1em 0.2em;
+    box-shadow: 6px 6px currentColor;
+    z-index   : 11;
+    top       : 1.25em;
 }
 
 :is(.right, .left):has(:focus) {
