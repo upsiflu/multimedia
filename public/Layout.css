@@ -119,3 +119,15 @@ pre {
 .column>* {
     flex-grow: 1;
 }
+
+body {
+    image-rendering    : pixelated;
+    overscroll-behavior: none;
+}
+
+img[alt=icon] {
+    max-width: 10rem;
+    float    : right;
+    inset    : -5rem auto auto -2rem;
+    position : relative;
+}
