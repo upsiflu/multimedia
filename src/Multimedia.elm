@@ -31,10 +31,10 @@ items =
       , title = "Restrictive"
       , description =
             """
-For my smaller SPA projects, I am collecting some abstractions into a UI library. I am going for <more summary="cohesion"> Aiming to concentrate everyting pertaining to a certain type inside its corresponding model. [Read the Wikipedia\u{00A0}article](https://en.wikipedia.org/wiki/Cohesion%28computer_science%29 "Wikipedia article")</more> and defaults at the expense of control.
+For my smaller SPA projects, I packing some abstractions into a UI library, going for <more summary="cohesion"> Aiming to concentrate everyting pertaining to a certain type inside its corresponding model. [Read the Wikipedia\u{00A0}article](https://en.wikipedia.org/wiki/Cohesion%28computer_science%29 "Wikipedia article")</more> and defaults at the expense of power and expressiveness.
 
-- The URL stores the complete UI state. <more summary="_How?_">In contrast to the Elm architecture, `update` and `view` don't receive the URL. Instead, you create Links such as `toggle`, `goTo`, `tab` or `bounce` to differenciate UI (sub)states. This guarantees that when you share a link or your current URL, the receiver will get the same view.</more>
-- The module hierarchy is independent from the layout. <more summary="_How?_">Write `view` functions for your types in the corresponding modules, then give them a place in the global layout. In the diagram above, you can see the default layout with four regions.</more>
+- _Defaults:_ The URL stores the complete UI state. <more summary="_How?_">In contrast to the Elm architecture, `update` and `view` don't receive the URL. Instead, you add predefined Links such as `toggle`, `goTo`, `tab` or `bounce` to differenciate UI (sub)states. This guarantees that when you share a link or your current URL, the receiver will get the same view.</more>
+- _Cohesion:_ The module hierarchy is independent from the layout. <more summary="_How?_">Write `view` functions for your types in the corresponding modules, then give them a place in the global layout. In the diagram below, you can see the default layout with four regions.</more>
 """
       , sample =
             Diagram
@@ -49,8 +49,14 @@ For my smaller SPA projects, I am collecting some abstractions into a UI library
 <more summary="`Control` Region <alternate/>">
 The editing controls are automatically derived from the model (w.i.p.)</more>"""
                     ]
-                , filename = "restrictive.png"
-                , alt = ""
+                , center = """
+
+
+![](restrictive.png)
+
+
+
+"""
                 , right =
                     [ """
 URL: <url>x.y<more summary="/Comp1#square">`Path` and `Fragment` determine which page to show and which object to focus.</more><more summary="?edit">A `Flag` may reveal the editing controls.</more></url>"""
@@ -58,7 +64,7 @@ URL: <url>x.y<more summary="/Comp1#square">`Path` and `Fragment` determine which
 <more summary="Toggling the UI state">This eye icon might toggle the visibility of a layer. But since the view-state is kept inside the URL, I don't need to pass messages and Booleans across modules in my `update`.</more>"""
                     , """"""
                     , """
-<more summary="Code Cohesion"> A single `view` can span several screen regions. No need to manually pass fragments across modules. This red square is represented as a shape in the `Scene`, its comments are accessible in an `Info` bubble, and its data is editable through the property sheet in the `Control` region.</more>"""
+<more summary="Code Cohesion"> A single `view` can span several screen regions. No need to manually pass fragments across modules. This square is represented as a shape in the `Scene`, its comments are accessible in an `Info` bubble, and its data is editable through the property sheet in the `Control` region.</more>"""
                     , """"""
                     , """"""
                     , """
@@ -75,58 +81,110 @@ URL: <url>x.y<more summary="/Comp1#square">`Path` and `Fragment` determine which
     , { flag = "Shell"
       , category = "Project across many media"
       , timeframe = "2021—"
-      , title = "The Shell"
+      , title = "The Shells"
       , description =
             """
 This figure inspires a growing network of activsts around the world to re-examine the <more summary="_surfaces of imagination_"> Where are body images created? Clothes, screens, sculptures, image-boards, magazines, film and genders are examples of what we call _Shells_, hybrid hulls holding collages of imaginary bodies that we edit and inhabit collectively. </more>. In workshops, congresses and virtual landscapes, we become future queer and deviant bodies."""
       , sample =
             Diagram
                 { left =
-                    [ """
-<more summary='Hello'>Yo I am here</more>
-Incipit
-<more summary='Lucha\u{00A0}Lugar'>
-Description and here we have a very very long description... _so long in fact it will definitely span several lines, perhaps many..._
-<more summary='Click me! I am
-- several 
-- lines 
-- long'>
-Tada!
+                    [ """"""
+                    , """
+![Lucha](shell-2.png)
+
+<more summary='Lucha\u{00A0}Lugar '>
+<alternate/>
+
+
 </more>
-Ciaou!!!!</more>"""
-                    , "vide0club"
-                    , "Hologram"
+
+"""
+                    , """
+<over lays=
+
+'254px -149px -45deg Research 
+Shell Research 
+
++++ 220px 220px 85deg Webs 
+What we do
+
++++ 280px 0px -40deg Wearable 
+Wearable Shells
+
++++ 335px 120px -22deg Traces 
+Collecting traces
+
++++ 355px 275px -3deg Congresses 
+Congresses
+
++++ 340px 420px 20deg Mentoring 
+Mentoring
+
++++ 320px 535px 30deg Call 
+Open Call
+'>
+
+
+![vide0club](shell-0.png)
+
+</over>
+
+                    
+<more summary='vide0club'>
+<alternate/></more>
+"""
+                    , """
+![Hologram](shell-1.png)
+                    
+<more summary='Hologram'>
+<alternate/></more>
+"""
+                    , """"""
+                    , """![HCO3](HCO3.png) """
+                    , """![Ca](Ca.png)"""
                     ]
-                , filename = "diagram/shell.jpg"
-                , alt = "Through webs of affinity, informal conversations and experiments, we research and build shells, and invite fellow activists for mentoring and mutual workshops. Our traces are shared in zines."
-                , right = [ "are.na channel", "workshops", "ShellXhibition (upcoming)", "ShellXhibition (upcoming)", "<more summary='Yes'>And here we have a _long_ one</more>", "ShellScape Navigator", "Congress Website (2021)", "Mentoring protocol", "instagram channel", "Boundary Layer Definition" ]
+                , center = "![Through webs of affinity, informal conversations and experiments, we research and build shells, and invite fellow activists for mentoring and mutual workshops. Our traces are shared in zines.](clamshell.png)"
+                , right =
+                    [ """
+![icon](arena.png)
+[Virtual Wunderkammer](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy "Research | Browse our Are.na channel")"""
+                    , """
+![icon](workshop.png)
+[Workshop series]( "Congresses Wearable Traces | ")"""
+                    , """
+![icon](shellscape.png)
+[ShellScape Navigator](https://gather.town/app/5Wp6ebk3fOGv9Uuo/SHELL "Congresses Traces | Choose your Avatar and start exploring our interactive surface where we hold international events on gather.town")"""
+                    , """
+![icon](portal.png)
+[Congress Website](https://ShellCongress.com "Congresses Mentoring | Visit our 2021 congress website to learn more") """
+                    , """
+![icon](mentoring.png)
+[Mentoring protocol](https://www.are.na/block/18602679 "Mentoring Congresses | Clara and I developed a protocol for mentoring the contributors to the Congresses")"""
+                    , """
+![icon](instagram.png)
+[Image Stream](https://instagram.com/ShellCongress "Call Congresses | Instagram channel with news and invitations")"""
+                    ]
                 , bottom = [ "Resources", "Discourse", "Art", "Commons", "Academia", "Funding", "Imaginaries", "Public\u{00A0}Spaces", "Infrastructure" ]
                 }
-      , info = """
-Since 2020, we are organising 
-[Congresses and Symposiums](https://ShellCongress.com "https://ShellCongress.com | Visit our 2021 congress website to learn more"), 
-curate [a news channel](https://instagram.com/ShellCongress " | Instagram stream with news and invitations") and 
-a [collection of traces and reflections](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy "Open in new tab | Browse our Are.na channel") 
-and [navigate the ShellScapes](https://gather.town/app/5Wp6ebk3fOGv9Uuo/SHELL " | Choose your Avatar and start exploring our interactive surface where we hold international events on gather.town"). The following diagram shows how our collective shell grew to tackle all sorts of media surfaces.
-"""
+      , info = """"""
       }
     , { flag = "MaT"
       , category = "Community Lab Series"
       , timeframe = "2021—"
       , title = "Moving across Thresholds"
       , description =
-            """For Renae Shadler's lab series, I am creating [a website/archive](https://movingAcrossThresholds.com "https://movingAcrossThresholds.com | Here, participants of the labs can browse and add traces of their explorations.") and a newsletter and social media campaign. In this video where I go through some of our considerations and decisions:"""
+            """For Renae Shadler's lab series, I am creating [a website/archive](https://movingAcrossThresholds.com "https://movingAcrossThresholds.com | Visit the website where lab participants can browse and add traces of their explorations.") and a newsletter and social media campaign. In this video I walk through some of our considerations and decisions:"""
       , sample =
             Video
       , info = """
-[Renae](http://renaeshadler.com/about/ " | Berlin-based choreographer, performer and researcher exploring how we are both shaping and being shaped by our environment &#91;website&#93;") was looking for an immersive experience that would match the topic of 'moving across thresholds': traversing fields of arts, critical theory and activism. We decided to build a giant Accordion component where visitors can open and close nested segments. The Tree-Zipper which I had implemented in 2019 was the perfect structure to hold the data. In the implementation process, we had to tackle several challenges:
+[Renae](http://renaeshadler.com/about/ " | Berlin-based choreographer, performer and researcher exploring how we are both shaping and being shaped by our environment &#91;website&#93;") was looking for an immersive experience that would match the topic of 'moving across thresholds': traversing fields of arts, critical theory and activism. We decided to build a giant Accordion component where visitors can open and close nested segments. <more summary="The Tree-Zipper which I had implemented in 2019">![](zippers.jpg)[Browse the code on github](https://github.com/upsiflu/matsite/tree/main/src/Zipper) </more> was the perfect structure to hold the data. In the implementation process, we had to tackle several challenges:
 
 - Robust <more summary="date/time management"> The UI would display local dates while the backend would store UTC.</more>
 - <more summary="Fluid animations and transitions in css"> I added custom elements where the centralism of the Elm architecture seemed unnecessary. </more> to match the idea of moving across segments.
 -  Automatic <more summary="linking across the segments"> (for example to connect the articles on events with the corresponding facilitator bios) by auto-generating a dictionary with valid links and fuzzy matching of URL paths.</more>
 - <more summary="Integrating a Google Drive folder as well as an are.na channel"> Unfortunately, both services have a very limited Api. In contrast, the vimeo Api, an external video cover-image service, and weserv.nl for image preprocessing proved more solid for a deep integration.</more> in their own custom elements.
       
-But the larges and most interesting task was implementing <more summary="a content management system with unlimited Undo."> My solution is to encode the state as a series of transformations (Actions), where each edit adds to an append-only log. The `view` folds this log into a zipper (a tree with a single open node) and renders it to Html.</more>"""
+But the larges and most interesting task was implementing <more summary="a content management system with unlimited Undo."> My solution is to encode the state as a series of transformations (Actions), where each edit adds to an append-only log. The `view` folds this log into a <more summary="Zipper">A tree datastructure with a single "open" node</more> and renders it to Html.</more>"""
       }
     , { flag = "Glossary"
       , category = "Research"
@@ -141,9 +199,10 @@ In various UX experiments with fellow artists and community organizers, we exami
 <carousel>
 
 
-<more summary="![](ux.png)">
-<more summary="![](ux.gif)">
-User interface investigation with Sabrina. Exploring an exhibition she created on the platform ResearchCatalogue.net, we are recording the barriers she encounters as she navigates and edits the multi-media collage. How does my body expand into the boundaries set by the software? Which strategies and tactics help me find agency and discover new possibilities? How does the experience affect my self-image and my self-awareness irl?
+
+<more summary="![](ux-tests.jpg)">![](ux.gif)
+<more summary=" User interface investigation with Sabrina...">
+ Exploring an exhibition she created on the platform ResearchCatalogue.net, we are recording the barriers she encounters as she navigates and edits the multi-media collage. How does my body expand into the boundaries set by the software? Which strategies and tactics help me find agency and discover new possibilities? How does the experience affect my self-image and my self-awareness irl?
 </more>
 </more>
 
@@ -154,6 +213,11 @@ This collage from our zine <more summary="captures identity as a collage of simu
 Who is ‘we’, who addresses ‘us’, what is beyond ‘this’ body? Rituals on coded surfaces temporarily change our bodies. Avatars, roles and personas then shellter us from impositions of fixed identity, and reciprocally shellter those who address us from an encounter with the messy mollusc of what’s behind the mask — something that may not ‘really’ exist.</more>. You can [take a tour of the ShellScape here](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy).
 
 </more>
+
+![](controls.png)
+
+![](ui-design.jpg)
+
 
 </carousel>"""
       , info = """[Read my Glossary of UX concepts &#91;pdf&#93;](UX-Glossary.pdf)"""
