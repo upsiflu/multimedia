@@ -3,7 +3,7 @@
 }
 
 #Restrictive {
-    --min-center-column: calc(var(--column) / 2 - 4rem)
+    --min-center-column: calc(var(--column) / 5 * 3 - 4rem)
 }
 
 #Restrictive .center {
@@ -56,4 +56,129 @@
 
 :is(.left, .right) .before {
     flex-grow: 0;
+}
+
+@keyframes wobble {
+    0% {
+        transform: skewX(0deg);
+    }
+
+    20% {
+        transform: skewX(-15deg);
+    }
+
+    40% {
+        transform: skewX(15deg);
+    }
+
+    60% {
+        transform: skewX(-10deg);
+    }
+
+    80% {
+        transform: skewX(10deg);
+    }
+
+    100% {
+        transform: skewX(0deg);
+    }
+}
+
+@keyframes goIn {
+    0% {
+        left   : 0;
+        top    : 0;
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+        left   : 45px;
+        top    : -60px;
+    }
+
+    51% {
+        opacity: 0;
+        left   : -100px;
+        top    : 100px;
+    }
+
+    100% {
+        left   : 0;
+        top    : 0;
+        opacity: 1;
+    }
+}
+
+#Shell .legend-container:focus-within img {
+    animation: .5s wobble;
+}
+
+
+#Shell img[alt] {
+    width: auto;
+}
+
+#Shell .legend-container:has(img[alt="Lucha"]) {
+    transform: translateX(85px);
+}
+
+#Shell .legend-container:has(img[alt="vide0club"]) {
+    transform: translate(19px, -38px);
+}
+
+#Shell .legend-container:has(img[alt="Hologram"]) {
+    transform: translate(0px, -34px);
+}
+
+#Shell .column:is(.left, .right) {
+    z-index: 2;
+}
+
+#Shell .legend:focus-within {
+    z-index: 3;
+}
+
+#Shell img[alt="Ca"] {
+    transform: translate(175px, 34px);
+}
+
+#Shell img[alt="HCO3"] {
+    transform: translate(99px, 75px);
+}
+
+#Shell :has(.center:hover) :is([alt="Ca"], [alt="HCO3"]) {
+    animation: .5s goIn var(--delay);
+    position : relative;
+}
+
+#Shell {
+    --delay: 0s;
+}
+
+#Shell img[alt="Ca"] {
+    --delay: .05s;
+}
+
+#Shell .right .after {
+    flex-grow: 0
+}
+
+:has(.dropdown:is(:hover, :focus-within) [title~=Mentoring]) #Mentoring,
+:has(.dropdown:is(:hover, :focus-within) [title~=Congresses]) #Congresses,
+:has(.dropdown:is(:hover, :focus-within) [title~=Traces]) #Traces,
+:has(.dropdown:is(:hover, :focus-within) [title~=Research]) #Research,
+:has(.dropdown:is(:hover, :focus-within) [title~=Call]) #Call,
+:has(.dropdown:is(:hover, :focus-within) [title~=Wearable]) #Wearable {
+    filter: invert(1);
+}
+
+
+.sample:has(#Mentoring:hover) .dropdown:has([title~=Mentoring]),
+.sample:has(#Congresses:hover) .dropdown:has([title~=Congresses]),
+.sample:has(#Traces:hover) .dropdown:has([title~=Traces]),
+.sample:has(#Research:hover) .dropdown:has([title~=Research]),
+.sample:has(#Call:hover) .dropdown:has([title~=Call]),
+.sample:has(#Wearable:hover) .dropdown:has([title~=Wearable]) {
+    filter: invert(1);
 }
