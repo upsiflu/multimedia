@@ -61,8 +61,7 @@ type Sample
     = Sample String
     | Diagram
         { left : List String
-        , filename : String
-        , alt : String
+        , center : String
         , right : List String
         , bottom : List String
         }
@@ -114,10 +113,10 @@ viewSample sample =
         Sample md ->
             Ui.html ( "sample", Html.div [ Attr.class "sample" ] (markdown md) )
 
-        Diagram ({ left, filename, alt, right, bottom } as config) ->
+        Diagram ({ left, center, right, bottom } as config) ->
             Ui.wrap (flex "sample row")
                 (Ui.wrap (addBeforeAndAfter >> flex "column left") (wrapLegends left)
-                    ++ Ui.wrap (flex "column center") (Ui.html (image config) ++ Ui.wrap (flex "row") (wrapLegends bottom))
+                    ++ Ui.wrap (flex "column center") (List.concatMap (Tuple.pair "center" >> Ui.html) (markdown center) ++ Ui.wrap (flex "row") (wrapLegends bottom))
                     ++ Ui.wrap (addBeforeAndAfter >> flex "column right") (wrapLegends right)
                 )
 
@@ -210,6 +209,41 @@ specialRenderer =
                             []
                             renderedChildren
                     )
+                , Markdown.Html.tag "youtube"
+                    (\src renderedChildren ->
+                        Html.video
+                            [ Attr.tabindex -1
+                            , Attr.src "blob:https://www.youtube.com/04ef2765-df9d-4529-a054-7c2041715470"
+                            ]
+                            []
+                    )
+                    |> Markdown.Html.withAttribute "src"
+                , Markdown.Html.tag "over"
+                    (\overlays renderedChildren ->
+                        let
+                            renderOverlay str =
+                                case String.split " " str of
+                                    x :: y :: rotation :: id :: content ->
+                                        Html.div
+                                            [ Attr.class "overlay"
+                                            , Attr.id id
+                                            , Attr.style "transform"
+                                                ("translate(" ++ x ++ "," ++ y ++ ") rotate(" ++ rotation ++ ")")
+                                            ]
+                                            (markdown (String.join " " content))
+
+                                    _ ->
+                                        Html.div [ Attr.class "overlay" ]
+                                            (markdown str)
+                        in
+                        Html.div
+                            [ Attr.class "overlaid" ]
+                            (renderedChildren
+                                ++ List.map renderOverlay
+                                    (String.split "+++ " overlays)
+                            )
+                    )
+                    |> Markdown.Html.withAttribute "lays"
                 ]
         , image =
             \imageInfo ->
