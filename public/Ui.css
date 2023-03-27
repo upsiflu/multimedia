@@ -339,3 +339,9 @@ code {
 ::selection {
     background-color: cyan;
 }
+
+
+
+.info li .dropdown:after {
+    content: " ";
+}

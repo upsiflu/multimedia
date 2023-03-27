@@ -182,3 +182,64 @@
 .sample:has(#Wearable:hover) .dropdown:has([title~=Wearable]) {
     filter: invert(1);
 }
+
+
+
+
+
+
+
+
+@keyframes moveRight {
+
+    0% {
+        opacity  : 0;
+        transform: translateX(-1rem);
+    }
+
+    50% {
+        transform: translateX(0);
+        opacity  : 1;
+    }
+
+    100% {
+        transform: translateX(1rem);
+        opacity  : 0;
+    }
+}
+
+.carousel::after,
+.carousel:hover::after,
+.carousel:hover::after::after {
+    display    : block;
+    content    : ">>";
+    animation  : .3s ease-in-out 0.1s 18 moveRight;
+    position   : absolute;
+    right      : 0;
+    top        : 50%;
+    text-shadow: 2px 2px solid black;
+    color      : white;
+    font-size  : 2rem;
+}
+
+.carousel::after::after {
+    animation: .3s ease-in-out 0s 18 moveRight;
+
+}
+
+.carousel {
+    position: relative;
+}
+
+.carousel::after {
+    opacity    : 0;
+    display    : block;
+    content    : ">>";
+    animation  : .3s ease-in-out .1s 18 moveRight;
+    position   : absolute;
+    right      : 0;
+    top        : 50%;
+    text-shadow: 2px 2px white;
+    color      : black;
+    font-size  : 12rem;
+}
