@@ -131,7 +131,7 @@ viewSample sample =
         Sample md ->
             Ui.html ( "sample", Html.div [ Attr.class "sample" ] (markdown md) )
 
-        Diagram ({ left, center, right, bottom } as config) ->
+        Diagram { left, center, right, bottom } ->
             Ui.wrap (flex "sample row")
                 (Ui.wrap (addBeforeAndAfter >> flex "column left") (wrapLegends left)
                     ++ Ui.wrap (flex "column center") (List.concatMap (Tuple.pair "center" >> Ui.html) (markdown center) ++ Ui.wrap (flex "row") (wrapLegends bottom))
@@ -141,17 +141,21 @@ viewSample sample =
         Video ->
             Ui.singleton
 
-        Inclusion ({ left, source, right, bottom } as config) ->
+        Inclusion { left, source, right, bottom } ->
             Ui.wrap (flex "sample row")
                 (Ui.wrap (addBeforeAndAfter >> flex "column left") (wrapLegends left)
                     ++ Ui.wrap (flex "column center")
                         (Ui.html
                             ( "inclusion"
-                            , Html.iframe
-                                [ Attr.attribute "src" source
-                                , Attr.attribute "loading" "lazy"
-                                ]
+                            , Html.node "silence-console"
                                 []
+                                [ Html.node "iframe"
+                                    [ Attr.src source
+                                    , Attr.attribute "is" "silent-iframe"
+                                    , Attr.attribute "loading" "lazy"
+                                    ]
+                                    []
+                                ]
                             )
                             ++ Ui.wrap (flex "row") (wrapLegends bottom)
                         )
@@ -168,7 +172,7 @@ specialRenderer =
     { defaultHtmlRenderer
         | link =
             \link content ->
-                case Maybe.map (String.split " | ") (Debug.log "Link content with |" link.title) of
+                case Maybe.map (String.split " | ") link.title of
                     Just [ simpleTitle ] ->
                         Html.a
                             [ Attr.href link.destination

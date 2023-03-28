@@ -96,7 +96,10 @@ URL: <url>x.y<more summary="/Comp1#square">`Path` and `Fragment` determine which
                 , bottom = [ """
 <more summary="Progressive Disclosure">By clicking `OK`, you toggle the `edit` flag from the URL, which in turn determines the visibility of the Control Sheet. Such `toggle` links can be nested to implement deep [progressive disclosure](https://www.nngroup.com/articles/progressive-disclosure/).</more>""" ]
                 }
-      , info = """[Visit my `restrictive` github repo](https://github.com/upsiflu/restrictive)"""
+      , info = """
+[Visit my `restrictive` github repo](https://github.com/upsiflu/restrictive)
+      
+I implemented the clickable headings on this page using my `Restrictive` library. [Browse the Source here](https://github.com/upsiflu/multimedia)"""
       }
     , { flag = "Shell"
       , category = "Project across many media"
@@ -316,8 +319,6 @@ _Flupsi's Interactive Media Portfolio_
     \u{00A0}
 
 """
-            ++ navLink "Home"
-                "[flupsi.com](https://flupsi.com)"
             ++ List.concatMap viewItem items_
     , layout = Restrictive.Layout.withClass "Multimedia"
     , title = "Flupsi's multimedia portfolio"
