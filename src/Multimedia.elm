@@ -115,6 +115,7 @@ This figure inspires a growing network of activsts around the world to re-examin
 <more summary='Lucha\u{00A0}Lugar '>
 <alternate/>
 
+Under the calcic guise of academic research, Michelle and Padme are practicing imagination against the genocide, inspired by the Zapatista maxim 'Lucha como Lugar' (The struggle is a place). Fighting against the hegemony of extractivism, our colonised bodies are in diverse situations and frontlines, but the struggle connects in a shared imaginary.
 
 </more>
 
@@ -125,13 +126,21 @@ This figure inspires a growing network of activsts around the world to re-examin
 
                     
 <more summary='vide0club'>
-<alternate/></more>
+<alternate/>
+
+Valki's vide0club events support filmmakers creating anti-hegemonial queer and third-world body images. How can we leverage the peculiarities video and film to step out of the colonial matrix of representation?
+
+</more>
 """
                     , """
 ![Hologram](shell-1.png)
                     
 <more summary='Hologram'>
-<alternate/></more>
+<alternate/>
+
+The Hologram is an international communit of activists, as well as a protocol for mutual care. As a Shell, it leverages the power of asking friends for support, building a resourceful militia as capitalism crumbles.
+
+</more>
 """
                     , """"""
                     , """"""
@@ -177,7 +186,7 @@ Open Call
 [Virtual Wunderkammer](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy "Research | Browse our Are.na channel")"""
                     , """
 ![icon](workshop.png)
-[Workshop series]( "Congresses Wearable Traces | ")"""
+[Workshop series](https://docs.google.com/document/d/e/2PACX-1vQrtVZQEc9QHKuutcXynNZCqoDP9UnomuEkwbghRHjgYg23kE5ATUpGD0tHlaurPRuAxQmngfkBwfRg/pub "Congresses Wearable Traces | In this workshop series, I am inviting participants to engage with their individual boundaries, develop an awareness for the simultaneous Shells around our bodies, and then build a collective exosceleton")"""
                     , """
 ![icon](shellscape.png)
 [ShellScape Navigator](https://gather.town/app/5Wp6ebk3fOGv9Uuo/SHELL "Congresses Traces | Choose your Avatar and start exploring our interactive surface where we hold international events on gather.town")"""

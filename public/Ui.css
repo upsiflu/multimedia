@@ -349,16 +349,28 @@ code {
 
 
 nav {
-    position     : sticky;
-    top          : 0;
-    border-bottom: 0.5px solid black;
-    margin-top   : -4rem;
-    background   : white;
+    position      : sticky;
+    top           : 0;
+    border-bottom : 0.5px solid black;
+    margin-top    : -4rem;
+    background    : white;
+    z-index       : 100;
+    mix-blend-mode: exclusion;
 }
 
 nav>* {
     display       : inline-block;
     vertical-align: middle;
+}
+
+nav>*:hover:after {
+    content   : attr(href);
+    position  : absolute;
+    background: black;
+    color     : white;
+    left      : 0;
+    bottom    : -1rem;
+    outline   : 0.5px solid white;
 }
 
 nav>*:hover {
