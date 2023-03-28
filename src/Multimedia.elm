@@ -51,17 +51,37 @@ The editing controls are automatically derived from the model (w.i.p.)</more>"""
                     ]
                 , center = """
 
+<over lays='
 
+11.13rem 0.5rem 0deg Toggling 
+<highlight/>
+
++++ 8.3rem 10.45rem 0deg Code  
+<highlight/>
+
++++ 8.3rem 17.13rem 0deg Code1 
+<highlight/>
+
++++ 8.3rem 21.4rem 0deg Code2 
+<highlight/>
+
++++ 5rem 26.26rem 0deg Progressive 
+<highlight/>
+
++++ 11.133rem -4.96rem 0deg Progressive1 
+<highlight/>
+
+'>
 ![](restrictive.png)
 
-
+</over>
 
 """
                 , right =
                     [ """
 URL: <url>x.y<more summary="/Comp1#square">`Path` and `Fragment` determine which page to show and which object to focus.</more><more summary="?edit">A `Flag` may reveal the editing controls.</more></url>"""
                     , """
-<more summary="Toggling the UI state">This eye icon might toggle the visibility of a layer. But since the view-state is kept inside the URL, I don't need to pass messages and Booleans across modules in my `update`.</more>"""
+<more summary="Toggling the UI state" >This eye icon might toggle the visibility of a layer. But since the view-state is kept inside the URL, I don't need to pass messages and Booleans across modules in my `update`.</more>"""
                     , """"""
                     , """
 <more summary="Code Cohesion"> A single `view` can span several screen regions. No need to manually pass fragments across modules. This square is represented as a shape in the `Scene`, its comments are accessible in an `Info` bubble, and its data is editable through the property sheet in the `Control` region.</more>"""
@@ -114,31 +134,37 @@ This figure inspires a growing network of activsts around the world to re-examin
 <alternate/></more>
 """
                     , """"""
-                    , """![HCO3](HCO3.png) """
-                    , """![Ca](Ca.png)"""
+                    , """"""
+                    , """"""
                     ]
                 , center = """<over lays=
 
-'160px 10px -45deg Research 
+'10.666rem 0.66rem -45deg Research 
 Shell Research 
 
-+++ 190px 80px -40deg Wearable 
++++ 12.66rem 7rem -40deg Wearable 
 Wearable Shells
 
-+++ 120px 280px -85deg Webs 
++++ 8rem 20rem -85deg Webs 
 What we do
 
-+++ 235px 180px -22deg Traces 
++++ 15.66rem 15rem -22deg Traces 
 Collecting traces
 
-+++ 255px 345px -3deg Congresses 
++++ 17rem 24rem -3deg Congresses 
 Congresses
 
-+++ 240px 470px 20deg Mentoring 
++++ 16rem 33rem 20deg Mentoring 
 Mentoring
 
-+++ 220px 555px 30deg Call 
++++ 14.76rem 39rem 30deg Call 
 Open Call
+
++++ 0rem 37rem 0deg HCO3 
+![HCO3](HCO3.png) 
+
++++ 5.33rem 39.666rem 0deg Ca 
+![Ca](Ca.png)
 '>
 
 
@@ -274,7 +300,7 @@ view items_ =
     in
     { body =
         Ui.viewMarkdown """
-_Interactive Media Portfolio_
+_Flupsi's Interactive Media Portfolio_
 
     \u{00A0}
     \u{00A0}
