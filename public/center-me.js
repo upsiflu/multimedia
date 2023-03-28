@@ -10,12 +10,11 @@ customElements.define(
     }
 
     connectedCallback() {
-      console.log("connectedCallback", this);
-      window.requestAnimationFrame(() => this.parentElement?.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" }));
+      window.requestAnimationFrame(() => this.scrollIntoView({ behavior: "smooth", block: "start", inline: "center" }));
     }
 
     static get observedAttributes() {
-      return ["increment"];
+      return ["hash"];
     }
   }
 );

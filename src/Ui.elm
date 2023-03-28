@@ -53,14 +53,20 @@ navLink flag =
 viewItem : Item -> Ui
 viewItem { flag, category, timeframe, title, description, sample, info } =
     (List.concat >> Ui.ul flag)
-        [ Ui.html ( "category", Html.span [ Attr.class "category" ] [ Html.text category ] )
+        [ Ui.byLocation
+            (\( _, hash ) ->
+                if hash == Just flag then
+                    Ui.html ( "centering", Html.node "center-me" [ Attr.attribute "hash" flag ] [] )
+
+                else
+                    []
+            )
+        , Ui.html ( "category", Html.span [ Attr.class "category" ] [ Html.text category ] )
         , Ui.html ( "timeframe", Html.span [ Attr.class "timeframe" ] (markdown timeframe) )
         , Ui.wrap (\h -> [ ( "anchor", Html.a [ Attr.href ("#" ++ flag), Attr.id flag ] [ Keyed.node "h1" [] h ] ) ]) (List.concatMap Ui.html (markdown title |> List.map (Tuple.pair "")))
         , (markdown >> Html.div [ Attr.class "description" ] >> Tuple.pair "description" >> Ui.html) description
         , viewSample sample
         , (markdown >> Html.div [ Attr.class "info" ] >> Tuple.pair "info" >> Ui.html) info
-
-        --, Ui.html ( "observe center", Html.node "focus-when-in-center" [ Attr.attribute "flag" flag ] [] )
         ]
         ++ navLink flag ("![" ++ flag ++ "](" ++ flag ++ "-icon.png)")
 
@@ -191,17 +197,13 @@ specialRenderer =
         , html =
             Markdown.Html.oneOf
                 [ Markdown.Html.tag "more"
-                    (\summary renderedChildren ->
+                    (\summary ->
                         viewHtmlLegend (markdown summary)
-                            (Html.span [ Attr.class "popup", Attr.tabindex 0 ])
-                            renderedChildren
+                            (Html.span [ Attr.class "popup", Attr.title summary, Attr.tabindex 0 ])
                     )
                     |> Markdown.Html.withAttribute "summary"
                 , Markdown.Html.tag "url"
-                    (\renderedChildren ->
-                        Html.span [ Attr.class "url", Attr.title "The URL" ]
-                            renderedChildren
-                    )
+                    (Html.span [ Attr.class "url", Attr.title "The URL" ])
                 , Markdown.Html.tag "carousel"
                     (\renderedChildren ->
                         Html.div [ Attr.class "carousel" ]
@@ -210,22 +212,20 @@ specialRenderer =
                             ]
                     )
                 , Markdown.Html.tag "alternate"
-                    (\renderedChildren ->
-                        Html.node "alternate"
-                            []
-                            renderedChildren
+                    (Html.node "alternate"
+                        []
                     )
                 , Markdown.Html.tag "single-column"
-                    (\renderedChildren ->
-                        Html.node "single-column"
-                            []
-                            renderedChildren
+                    (Html.node "single-column"
+                        []
                     )
+                , Markdown.Html.tag "highlight"
+                    (Html.div [ Attr.class "highlight" ])
                 , Markdown.Html.tag "youtube"
-                    (\src renderedChildren ->
+                    (\src _ ->
                         Html.video
                             [ Attr.tabindex -1
-                            , Attr.src "blob:https://www.youtube.com/04ef2765-df9d-4529-a054-7c2041715470"
+                            , Attr.src src
                             ]
                             []
                     )

@@ -319,7 +319,6 @@ code {
 
 .overlaid {
     position: relative;
-    outline : 1px dashed red;
 }
 
 .overlay {
@@ -350,7 +349,7 @@ code {
 
 
 nav {
-    position     : static;
+    position     : sticky;
     top          : 0;
     border-bottom: 0.5px solid black;
     margin-top   : -4rem;
@@ -360,7 +359,10 @@ nav {
 nav>* {
     display       : inline-block;
     vertical-align: middle;
+}
 
+nav>*:hover {
+    filter: invert(1);
 }
 
 nav p {
@@ -370,4 +372,40 @@ nav p {
 nav img {
     height: 4rem;
     width : auto;
+}
+
+center-me {
+    position: relative;
+    top     : -6rem;
+
+}
+
+
+#Restrictive .highlight {
+    color         : magenta;
+    outline       : 1.5px dashed currentColor;
+    border-radius : 2rem;
+    width         : 4rem;
+    height        : 4rem;
+    vertical-align: middle;
+    text-align    : center;
+    overflow      : visible;
+}
+
+.overlay:not(#Progressive1)>.highlight {
+    background: black;
+}
+
+
+
+
+#Restrictive .highlight>p {
+    display: block;
+    margin : 0;
+    padding: 0;
+
+}
+
+#Restrictive .overlay:has(.highlight) {
+    mix-blend-mode: difference;
 }

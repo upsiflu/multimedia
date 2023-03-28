@@ -84,6 +84,25 @@
     }
 }
 
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+
+
+    40% {
+        opacity: 0;
+    }
+
+    60% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1
+    }
+}
+
 @keyframes goIn {
     0% {
         left   : 0;
@@ -158,16 +177,16 @@
 }
 
 #Shell .center {
-    position: relative;
+    position      : relative;
+    mix-blend-mode: darken;
 }
 
-#Shell img[alt="Ca"] {
-    transform: translate(175px, 34px);
+#Shell .overlay:has(:is([alt="HCO3"], [alt="Ca"])) {
+    background: transparent;
+    border    : none;
+    outline   : none;
 }
 
-#Shell img[alt="HCO3"] {
-    transform: translate(99px, 75px);
-}
 
 #Shell :has(.center:hover) :is([alt="Ca"], [alt="HCO3"]) {
     animation: .5s goIn var(--delay);
@@ -186,13 +205,23 @@
     flex-grow: 0
 }
 
-:has(.dropdown:is(:hover, :focus-within) [title~=Mentoring]) #Mentoring,
-:has(.dropdown:is(:hover, :focus-within) [title~=Congresses]) #Congresses,
-:has(.dropdown:is(:hover, :focus-within) [title~=Traces]) #Traces,
-:has(.dropdown:is(:hover, :focus-within) [title~=Research]) #Research,
-:has(.dropdown:is(:hover, :focus-within) [title~=Call]) #Call,
-:has(.dropdown:is(:hover, :focus-within) [title~=Wearable]) #Wearable {
+.sample:has(.dropdown:is(:hover, :focus-within) [title~=Mentoring]) #Mentoring,
+.sample:has(.dropdown:is(:hover, :focus-within) [title~=Congresses]) #Congresses,
+.sample:has(.dropdown:is(:hover, :focus-within) [title~=Traces]) #Traces,
+.sample:has(.dropdown:is(:hover, :focus-within) [title~=Research]) #Research,
+.sample:has(.dropdown:is(:hover, :focus-within) [title~=Call]) #Call,
+.sample:has(.dropdown:is(:hover, :focus-within) [title~=Wearable]) #Wearable {
     filter: invert(1);
+}
+
+.sample:has(.dropdown:is(:hover, :focus-within) [title~=Toggling]) #Toggling>.highlight,
+.sample:has(.dropdown:is(:hover, :focus-within) [title~=Code]) #Code>.highlight,
+.sample:has(.dropdown:is(:hover, :focus-within) [title~=Code]) #Code1>.highlight,
+.sample:has(.dropdown:is(:hover, :focus-within) [title~=Code]) #Code2>.highlight,
+.sample:has(.dropdown:is(:hover, :focus-within) [title~=Progressive]) #Progressive>.highlight,
+.sample:has(.dropdown:is(:hover, :focus-within) [title~=Progressive]) #Progressive1>.highlight {
+    background: currentColor;
+    animation : .15s linear 0s 10 blink;
 }
 
 
@@ -201,12 +230,23 @@
 .sample:has(#Traces:hover) .dropdown:has([title~=Traces]),
 .sample:has(#Research:hover) .dropdown:has([title~=Research]),
 .sample:has(#Call:hover) .dropdown:has([title~=Call]),
-.sample:has(#Wearable:hover) .dropdown:has([title~=Wearable]) {
+.sample:has(#Wearable:hover) .dropdown:has([title~=Wearable]),
+
+.sample:has(#Toggling:hover) .dropdown:has([title~=Toggling]),
+.sample:has(#Code:hover) .dropdown:has([title~=Code]),
+.sample:has(#Code1:hover) .dropdown:has([title~=Code]),
+.sample:has(#Code2:hover) .dropdown:has([title~=Code]),
+.sample:has(#Progressive:hover) .dropdown:has([title~=Progressive]),
+.sample:has(#Progressive1:hover) .dropdown:has([title~=Progressive]) {
     filter: invert(1);
 }
 
-
-
+/* 
+@media only screen and ((max-width: 480px)) {
+    .center .overlaid {
+        transform: scale(calc(100% * 480px / 100vw));
+    }
+} */
 
 
 
