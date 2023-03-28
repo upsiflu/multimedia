@@ -10,7 +10,7 @@ import Restrictive exposing (Application, application)
 import Restrictive.Layout
 import Restrictive.Layout.Region exposing (Aspect(..))
 import Restrictive.Ui as Ui
-import Ui exposing (Item, Sample(..), Ui, viewItem)
+import Ui exposing (Item, Sample(..), Ui, navLink, viewItem)
 
 
 {-| -}
@@ -100,34 +100,8 @@ This figure inspires a growing network of activsts around the world to re-examin
 
 """
                     , """
-<over lays=
-
-'254px -149px -45deg Research 
-Shell Research 
-
-+++ 220px 220px 85deg Webs 
-What we do
-
-+++ 280px 0px -40deg Wearable 
-Wearable Shells
-
-+++ 335px 120px -22deg Traces 
-Collecting traces
-
-+++ 355px 275px -3deg Congresses 
-Congresses
-
-+++ 340px 420px 20deg Mentoring 
-Mentoring
-
-+++ 320px 535px 30deg Call 
-Open Call
-'>
-
 
 ![vide0club](shell-0.png)
-
-</over>
 
                     
 <more summary='vide0club'>
@@ -143,7 +117,34 @@ Open Call
                     , """![HCO3](HCO3.png) """
                     , """![Ca](Ca.png)"""
                     ]
-                , center = "![Through webs of affinity, informal conversations and experiments, we research and build shells, and invite fellow activists for mentoring and mutual workshops. Our traces are shared in zines.](clamshell.png)"
+                , center = """<over lays=
+
+'160px 10px -45deg Research 
+Shell Research 
+
++++ 190px 80px -40deg Wearable 
+Wearable Shells
+
++++ 120px 280px -85deg Webs 
+What we do
+
++++ 235px 180px -22deg Traces 
+Collecting traces
+
++++ 255px 345px -3deg Congresses 
+Congresses
+
++++ 240px 470px 20deg Mentoring 
+Mentoring
+
++++ 220px 555px 30deg Call 
+Open Call
+'>
+
+
+
+![Through webs of affinity, informal conversations and experiments, we research and build shells, and invite fellow activists for mentoring and mutual workshops. Our traces are shared in zines.](clamshell.png)
+</over>"""
                 , right =
                     [ """
 ![icon](arena.png)
@@ -179,8 +180,8 @@ Open Call
       , info = """
 [Renae](http://renaeshadler.com/about/ " | Berlin-based choreographer, performer and researcher exploring how we are both shaping and being shaped by our environment &#91;website&#93;") was looking for an immersive experience that would match the topic of 'moving across thresholds': traversing fields of arts, critical theory and activism. We decided to build a giant Accordion component where visitors can open and close nested segments. <more summary="The Tree-Zipper which I had implemented in 2019">![](zippers.jpg)[Browse the code on github](https://github.com/upsiflu/matsite/tree/main/src/Zipper) </more> was the perfect structure to hold the data. In the implementation process, we had to tackle several challenges:
 
-- Robust <more summary="date/time management"> The UI would display local dates while the backend would store UTC.</more>
-- <more summary="Fluid animations and transitions in css"> I added custom elements where the centralism of the Elm architecture seemed unnecessary. </more> to match the idea of moving across segments.
+- Robust <more summary="date/time management"> The UI would display local dates while the backend would store UTC. </more>
+- <more summary="Fluid animations and transitions in css \u{00A0} "> I added custom elements where the centralism of the Elm architecture seemed unnecessary. </more> \u{00A0} to match the idea of moving across segments.
 -  Automatic <more summary="linking across the segments"> (for example to connect the articles on events with the corresponding facilitator bios) by auto-generating a dictionary with valid links and fuzzy matching of URL paths.</more>
 - <more summary="Integrating a Google Drive folder as well as an are.na channel"> Unfortunately, both services have a very limited Api. In contrast, the vimeo Api, an external video cover-image service, and weserv.nl for image preprocessing proved more solid for a deep integration.</more> in their own custom elements.
       
@@ -222,7 +223,7 @@ Who is ‘we’, who addresses ‘us’, what is beyond ‘this’ body? Rituals
 </carousel>"""
       , info = """[Read my Glossary of UX concepts &#91;pdf&#93;](UX-Glossary.pdf)"""
       }
-    , { flag = "bombast"
+    , { flag = "Bombast"
       , category = "Multilingual website"
       , timeframe = "2018"
       , title = "<single-column/>Bombast Duo"
@@ -242,12 +243,12 @@ After more than five years, this site has never needed maintenance.
 
 [Check out the Duo's website in a new tab](https://www.stephaniehanna.de/wp-content/weiseapp2018/weiseapp.html)"""
       }
-    , { flag = "weise"
+    , { flag = "Weise"
       , category = "Virtual copy of an interactive artwork"
       , timeframe = "2017"
       , title = "<single-column/>Die Weisen"
       , description =
-            """With artist [Stephanie Hannah](https://www.stephaniehanna.de/en/about-en/ " | Here's her website"), I created a virtual copy of her Aduino-powered speaking suitcase. Click the buttons to hear people interviewed Berlin neighborhoods tell you what they consider a good life (German-language)"""
+            """With artist [Stephanie Hannah](https://www.stephaniehanna.de/en/about-en/ " | Here's her website"), I created a virtual copy of her Arduino-powered speaking suitcase. Click the buttons to hear people interviewed Berlin neighborhoods tell you what they consider a good life (German-language)"""
       , sample =
             Inclusion
                 { left = [ "\u{00A0}" ]
@@ -271,7 +272,18 @@ view items_ =
             Restrictive.toggle (String.replace " " "-" str)
                 |> Ui.with Scene contents
     in
-    { body = List.concatMap viewItem items_
+    { body =
+        Ui.viewMarkdown """
+_Interactive Media Portfolio_
+
+    \u{00A0}
+    \u{00A0}
+    \u{00A0}
+
+"""
+            ++ navLink "Home"
+                "[flupsi.com](https://flupsi.com)"
+            ++ List.concatMap viewItem items_
     , layout = Restrictive.Layout.withClass "Multimedia"
     , title = "Flupsi's multimedia portfolio"
     }

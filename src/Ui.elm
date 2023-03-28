@@ -1,4 +1,4 @@
-module Ui exposing (Document, Item, Sample(..), Ui, markdown, toggle, viewItem)
+module Ui exposing (Document, Item, Sample(..), Ui, markdown, navLink, toggle, viewItem, viewMarkdown)
 
 import Html exposing (Html)
 import Html.Attributes as Attr
@@ -39,6 +39,17 @@ type alias Item =
     }
 
 
+viewMarkdown : String -> Ui
+viewMarkdown =
+    markdown >> List.concatMap (Tuple.pair "" >> Ui.html)
+
+
+navLink : String -> String -> Ui
+navLink flag =
+    markdown
+        >> Restrictive.goTo_ ( Nothing, Just flag )
+
+
 viewItem : Item -> Ui
 viewItem { flag, category, timeframe, title, description, sample, info } =
     (List.concat >> Ui.ul flag)
@@ -51,6 +62,7 @@ viewItem { flag, category, timeframe, title, description, sample, info } =
 
         --, Ui.html ( "observe center", Html.node "focus-when-in-center" [ Attr.attribute "flag" flag ] [] )
         ]
+        ++ navLink flag ("![" ++ flag ++ "](" ++ flag ++ "-icon.png)")
 
 
 

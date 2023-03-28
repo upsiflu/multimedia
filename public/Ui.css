@@ -319,6 +319,7 @@ code {
 
 .overlaid {
     position: relative;
+    outline : 1px dashed red;
 }
 
 .overlay {
@@ -344,4 +345,29 @@ code {
 
 .info li .dropdown:after {
     content: " ";
+}
+
+
+
+nav {
+    position     : static;
+    top          : 0;
+    border-bottom: 0.5px solid black;
+    margin-top   : -4rem;
+    background   : white;
+}
+
+nav>* {
+    display       : inline-block;
+    vertical-align: middle;
+
+}
+
+nav p {
+    display: inline;
+}
+
+nav img {
+    height: 4rem;
+    width : auto;
 }

@@ -116,7 +116,25 @@
 
 
 #Shell img[alt] {
-    width: auto;
+    width    : auto;
+    position : relative;
+    max-width: 100%;
+}
+
+#Shell img[alt~=icon] {
+    max-width: min(10rem, 100%);
+    float    : right;
+    inset    : -5rem auto auto -2rem;
+
+}
+
+#Shell .right img[alt~=icon] {
+    mix-blend-mode: color-burn;
+    inset         : auto;
+}
+
+#Shell .left img[alt] {
+    max-width: min(10rem, 200%);
 }
 
 #Shell .legend-container:has(img[alt="Lucha"]) {
@@ -137,6 +155,10 @@
 
 #Shell .legend:focus-within {
     z-index: 3;
+}
+
+#Shell .center {
+    position: relative;
 }
 
 #Shell img[alt="Ca"] {
