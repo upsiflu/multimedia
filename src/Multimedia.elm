@@ -212,9 +212,29 @@ Open Call
       , timeframe = "2021—"
       , title = "Moving across Thresholds"
       , description =
-            """For Renae Shadler's lab series, I am creating [a website/archive](https://movingAcrossThresholds.com "https://movingAcrossThresholds.com | Visit the website where lab participants can browse and add traces of their explorations.") and a newsletter and social media campaign. In this video I walk through some of our considerations and decisions:"""
+            """For Renae Shadler's lab series, I am creating a website/archive and a newsletter and social media campaign. In this video I walk through some of our considerations and decisions:"""
       , sample =
-            Video
+            Carousel "MaT"
+                [ """![](mat-layout.png)
+<more summary="Layout Draft">Inspired by the Accordion widget and progressive disclosure, I drafted a layout that would nudge the visitor to scroll in order to explore the depths and breadths of the _Moving across Thresholds_ project.</more>
+"""
+                , """![](mat-design-1.png)"""
+                , """![](mat-design-2.png)
+<more summary="Responsive design">Any screen, even the narrowest, will display at least one column of text, and hint at content that exists in either cardinal direction. We defined a column as 21rem so that the most common phone screens present text at 15-16px. On narrower screen, the rem decreases progressively.</more>
+"""
+                , """![](mat-screen-3.png)
+<more summary="Result">This is how the it turned out. I removed lots of shades and lines to reduce visual noise as the site is quite picture-heavy.</more>  
+"""
+                , """![](mat-screen-2.png)"""
+                , """![](mat-screen-1.png)
+                
+<more summary="Community interaction">The site integrates our `Are.na` library of texts as well as out Google drive where everyone is invited to leave and edit the traces from the labs.</more>                
+"""
+                , """![smooth](mat-flows.png)
+                
+<more summary="Data flows">This diagram is my attempt at visualizing sources of truth for the application, and how they interrelate. On the web platform, it seems impossible to have a single source of truth since we are at least dealing with the URL, the open page in the tab (with scroll, text-zoom, pinch-zoom, locale, navigation history), DOM (including the Focus), and the database, in this case a very simple firestore with hypertexts for articles and an append-only log for the site structure and non-HTML data.</more>        
+"""
+                ]
       , info = """
 [Renae](http://renaeshadler.com/about/ " | Berlin-based choreographer, performer and researcher exploring how we are both shaping and being shaped by our environment &#91;website&#93;") was looking for an immersive experience that would match the topic of 'moving across thresholds': traversing fields of arts, critical theory and activism. We decided to build a giant Accordion component where visitors can open and close nested segments. <more summary="The Tree-Zipper which I had implemented in 2019">![](zippers.jpg)[Browse the code on github](https://github.com/upsiflu/matsite/tree/main/src/Zipper) </more> was the perfect structure to hold the data. In the implementation process, we had to tackle several challenges:
 
@@ -223,7 +243,9 @@ Open Call
 -  Automatic <more summary="linking across the segments"> (for example to connect the articles on events with the corresponding facilitator bios) by auto-generating a dictionary with valid links and fuzzy matching of URL paths.</more>
 - <more summary="Integrating a Google Drive folder as well as an are.na channel"> Unfortunately, both services have a very limited Api. In contrast, the vimeo Api, an external video cover-image service, and weserv.nl for image preprocessing proved more solid for a deep integration.</more> in their own custom elements.
       
-But the larges and most interesting task was implementing <more summary="a content management system with unlimited Undo."> My solution is to encode the state as a series of transformations (Actions), where each edit adds to an append-only log. The `view` folds this log into a <more summary="Zipper">A tree datastructure with a single "open" node</more> and renders it to Html.</more>"""
+But the larges and most interesting task was implementing <more summary="a content management system with unlimited Undo."> My solution is to encode the state as a series of transformations (Actions), where each edit adds to an append-only log. The `view` folds this log into a <more summary="Zipper">A tree datastructure with a single "open" node</more> and renders it to Html.</more>
+
+[Visit the website where lab participants can browse and add traces of their explorations](https://movingAcrossThresholds.com)"""
       }
     , { flag = "Glossary"
       , category = "Research"

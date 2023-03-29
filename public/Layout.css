@@ -137,3 +137,7 @@ body {
     image-rendering    : pixelated;
     overscroll-behavior: none;
 }
+
+img[alt~=smooth] {
+    image-rendering: auto;
+}

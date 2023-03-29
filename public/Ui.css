@@ -293,10 +293,15 @@ code {
     color         : transparent;
 }
 
+.entry>a:first-child {
+    cursor: alias;
+}
+
 .entry:hover>a:first-child {
     outline       : 1px dashed cyan;
-    outline-offset: -3px background: rgba(255, 0, 0, .4)
+    outline-offset: -3px;
 }
+
 
 center-me-horizontally {
     pointer-events: none;
