@@ -53,14 +53,8 @@ navLink flag =
 viewItem : Item -> Ui
 viewItem { flag, category, timeframe, title, description, sample, info } =
     (List.concat >> Ui.ul flag)
-        [ Ui.byLocation
-            (\( _, hash ) ->
-                if hash == Just flag then
-                    Ui.html ( "centering", Html.node "center-me" [ Attr.attribute "hash" flag ] [] )
-
-                else
-                    []
-            )
+        [ Ui.html ( "centering", Html.node "center-me" [ Attr.attribute "hash" flag ] [] )
+            |> viewWhenHash flag
         , Ui.html ( "category", Html.span [ Attr.class "category" ] [ Html.text category ] )
         , Ui.html ( "timeframe", Html.span [ Attr.class "timeframe" ] (markdown timeframe) )
         , Ui.wrap (\h -> [ ( "anchor", Html.a [ Attr.href ("#" ++ flag), Attr.id flag ] [ Keyed.node "h1" [] h ] ) ]) (List.concatMap Ui.html (markdown title |> List.map (Tuple.pair "")))
@@ -69,6 +63,18 @@ viewItem { flag, category, timeframe, title, description, sample, info } =
         , (markdown >> Html.div [ Attr.class "info" ] >> Tuple.pair "info" >> Ui.html) info
         ]
         ++ navLink flag ("![" ++ flag ++ "](" ++ flag ++ "-icon.png)")
+
+
+viewWhenHash : Flag -> Ui -> Ui
+viewWhenHash flag ui =
+    Ui.byLocation
+        (\( _, hash ) ->
+            if hash == Just flag then
+                ui
+
+            else
+                []
+        )
 
 
 
@@ -90,6 +96,7 @@ type Sample
         , right : List String
         , bottom : List String
         }
+    | Carousel Flag (List String)
 
 
 viewSample : Sample -> Ui
@@ -161,6 +168,47 @@ viewSample sample =
                         )
                     ++ Ui.wrap (addBeforeAndAfter >> flex "column right") (wrapLegends right)
                 )
+
+        Carousel flag entries ->
+            List.indexedMap
+                (\i entry ->
+                    let
+                        id : Flag
+                        id =
+                            flag ++ String.fromInt i
+
+                        link : Ui
+                        link =
+                            Restrictive.goTo ( Nothing, Just id )
+
+                        centerer : Ui
+                        centerer =
+                            Ui.html ( "centering", Html.node "center-me-horizontally" [] [] )
+                                |> viewWhenHash id
+
+                        content : Ui
+                        content =
+                            viewMarkdown entry
+                    in
+                    link
+                        ++ centerer
+                        ++ content
+                        |> Ui.wrap
+                            (\entry_ ->
+                                [ ( "entry", Keyed.node "div" [ Attr.class "entry" ] entry_ ) ]
+                            )
+                )
+                entries
+                |> List.concat
+                |> Ui.wrap
+                    (\entries_ ->
+                        [ ( "carousel" ++ flag
+                          , Html.div
+                                [ Attr.class "carousel sample" ]
+                                [ Keyed.node "div" [ Attr.class "scrolling" ] entries_ ]
+                          )
+                        ]
+                    )
 
 
 

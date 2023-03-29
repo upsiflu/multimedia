@@ -234,37 +234,37 @@ But the larges and most interesting task was implementing <more summary="a conte
 In various UX experiments with fellow artists and community organizers, we examined: How to navigate and reclaim the platforms? What creative opportunities lie behind the UIs? Which hybrid body shells help us organize collective political action against barriers and policing?
 """
       , sample =
-            Sample """
-<carousel>
+            Carousel "Ux"
+                [ """![](ux-tests.jpg)
 
-
-
-<more summary="![](ux-tests.jpg)">![](ux.gif)
+<more summary="Exploring virtual collage surfaces...">![](ux.gif)
 <more summary=" User interface investigation with Sabrina...">
  Exploring an exhibition she created on the platform ResearchCatalogue.net, we are recording the barriers she encounters as she navigates and edits the multi-media collage. How does my body expand into the boundaries set by the software? Which strategies and tactics help me find agency and discover new possibilities? How does the experience affect my self-image and my self-awareness irl?
 </more>
-</more>
+</more>"""
+                , """
+![](selfreplacement.jpg)
 
-<more summary="![](selfreplacement.jpg)">
+<more summary="Self Replacement!">
 In her workshop “On identities, Other(s) Ours’ cartography” on the final day of the first ShellCongress (2021), [Yarinés Suarez](https://shellcongress.com/?window=Yarin----s-Suarez) invited us to map our many identities and intersection on a shared virtual canvas.
 
 This collage from our zine <more summary="captures identity as a collage of simultaneous media fragments: user interface elements, avatars, video frames, chat messages, multi-user doodles">
 Who is ‘we’, who addresses ‘us’, what is beyond ‘this’ body? Rituals on coded surfaces temporarily change our bodies. Avatars, roles and personas then shellter us from impositions of fixed identity, and reciprocally shellter those who address us from an encounter with the messy mollusc of what’s behind the mask — something that may not ‘really’ exist.</more>. You can [take a tour of the ShellScape here](https://www.are.na/flupsi-upsi/shell-3fezyrjc5iy).
 
-</more>
+</more>"""
+                , """
 
-![](controls.png)
+![](controls.png)"""
+                , """
 
-![](ui-design.jpg)
-
-
-</carousel>"""
+![](ui-design.jpg)"""
+                ]
       , info = """[Read my Glossary of UX concepts &#91;pdf&#93;](UX-Glossary.pdf)"""
       }
     , { flag = "Bombast"
       , category = "Multilingual website"
       , timeframe = "2018"
-      , title = "<single-column/>Bombast Duo"
+      , title = "Bombast Duo<single-column/>"
       , description =
             """With performance duo Bombast, I created a website template. Since the clients know HTML, we eschew a CMS or a build system in favor of a straightforward single-page HTML file."""
       , sample =
@@ -284,7 +284,7 @@ After more than five years, this site has never needed maintenance.
     , { flag = "Weise"
       , category = "Virtual copy of an interactive artwork"
       , timeframe = "2017"
-      , title = "<single-column/>Die Weisen"
+      , title = "Die Weisen<single-column/>"
       , description =
             """With artist [Stephanie Hannah](https://www.stephaniehanna.de/en/about-en/ " | Here's her website"), I created a virtual copy of her Arduino-powered speaking suitcase. Click the buttons to hear people interviewed Berlin neighborhoods tell you what they consider a good life (German-language)"""
       , sample =
