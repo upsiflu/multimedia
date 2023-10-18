@@ -1,27 +1,23 @@
-module Ui exposing (Document, Item, Sample(..), Ui, markdown, navLink, toggle, viewItem, viewMarkdown)
+module Ui exposing (Document, Item, Sample(..), Ui, markdown, viewItem, viewMarkdown)
 
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Keyed as Keyed
+import Less as Less
+import Less.Link exposing (Flag)
+import Less.Ui as Ui
+import Less.Ui.Html as Ui exposing (Region(..))
 import Markdown.Html
 import Markdown.Parser as Markdown
 import Markdown.Renderer exposing (defaultHtmlRenderer)
-import Restrictive as Restrictive
-import Restrictive.Get
-import Restrictive.Layout.Region as Region exposing (Aspect(..))
-import Restrictive.Mask
-import Restrictive.State exposing (Flag)
-import Restrictive.Ui as Ui
 
 
 type alias Ui =
-    Ui.Ui
-        Aspect
-        ( String, Html () )
+    Ui.Html Region () ()
 
 
 type alias Document =
-    Restrictive.Document Aspect ( String, Html () )
+    Less.Document ()
 
 
 
@@ -29,7 +25,7 @@ type alias Document =
 
 
 type alias Item =
-    { flag : Flag
+    { fragment : Flag
     , category : String
     , timeframe : String
     , title : String
@@ -44,25 +40,29 @@ viewMarkdown =
     markdown >> List.concatMap (Tuple.pair "" >> Ui.html)
 
 
-navLink : String -> String -> Ui
-navLink flag =
-    markdown
-        >> Restrictive.goTo_ ( Nothing, Just flag )
+navLink : String -> Ui -> Ui
+navLink fragment =
+    Ui.goTo []
+        { destination = "#" ++ fragment
+        , inHeader = True
+        , label = markdown ("![" ++ fragment ++ "](" ++ fragment ++ "-icon.png)")
+        }
 
 
 viewItem : Item -> Ui
-viewItem { flag, category, timeframe, title, description, sample, info } =
-    (List.concat >> Ui.ul flag)
-        [ Ui.html ( "centering", Html.node "center-me" [ Attr.attribute "hash" flag ] [] )
-            |> viewWhenHash flag
-        , Ui.html ( "category", Html.span [ Attr.class "category" ] [ Html.text category ] )
-        , Ui.html ( "timeframe", Html.span [ Attr.class "timeframe" ] (markdown timeframe) )
-        , Ui.wrap (\h -> [ ( "anchor", Html.a [ Attr.href ("#" ++ flag), Attr.id flag ] [ Keyed.node "h1" [] h ] ) ]) (List.concatMap Ui.html (markdown title |> List.map (Tuple.pair "")))
-        , (markdown >> Html.div [ Attr.class "description" ] >> Tuple.pair "description" >> Ui.html) description
+viewItem { fragment, category, timeframe, title, description, sample, info } =
+    (List.concat >> Ui.block "ul" [ Attr.id fragment ])
+        [ Ui.html
+            [ Html.span [ Attr.class "category" ] [ Html.text category ]
+            , Html.span [ Attr.class "timeframe" ] (markdown timeframe)
+            , Ui.wrap (\h -> [ ( "anchor", Html.a [ Attr.href ("#" ++ fragment) ] [ Keyed.node "h1" [] h ] ) ]) (List.concatMap Ui.html (markdown title |> List.map (Tuple.pair "")))
+            ]
+        , markdown description |> Html.div [ Attr.class "description" ] |> Tuple.pair "description" |> Ui.html
         , viewSample sample
-        , (markdown >> Html.div [ Attr.class "info" ] >> Tuple.pair "info" >> Ui.html) info
+        , markdown info |> Html.div [ Attr.class "info" ]
         ]
-        ++ navLink flag ("![" ++ flag ++ "](" ++ flag ++ "-icon.png)")
+        ++ navLink fragment
+            (Ui.node "center-me" [ Attr.attribute "hash" fragment ])
 
 
 viewWhenHash : Flag -> Ui -> Ui
@@ -179,7 +179,7 @@ viewSample sample =
 
                         link : Ui
                         link =
-                            Restrictive.goTo ( Nothing, Just id )
+                            Less.goTo ( Nothing, Just id )
 
                         centerer : Ui
                         centerer =
@@ -355,24 +355,3 @@ viewHtmlLegend summary wrapper popup =
                 :: popup
             )
         ]
-
-
-
-------- Helpers -------
-
-
-{-| Will add an inline text link and occlude all regions while unchecked.
-
-    a[role="switch"]:aria-checked {}
-
--}
-toggle : List (Html Never) -> Flag -> Ui
-toggle face =
-    Restrictive.State.toggle
-        >> Restrictive.State.view (Restrictive.State.preset.inline [] face)
-        >> (<<)
-            (\{ linkHtml, occlude } ->
-                Restrictive.Mask.mapKey ( Region.justRegion, Region.Region >> Just ) occlude
-                    >> Restrictive.Get.append (Restrictive.Get.map Ui.foliage linkHtml)
-            )
-        >> Ui.custom

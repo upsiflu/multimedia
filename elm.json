@@ -1,8 +1,7 @@
 {
     "type": "application",
     "source-directories": [
-        "src",
-        "../restrictive/src"
+        "src"
     ],
     "elm-version": "0.19.1",
     "dependencies": {
@@ -19,17 +18,33 @@
             "elm-community/maybe-extra": "5.3.0",
             "elm-community/string-extra": "4.0.1",
             "mdgriffith/elm-markup": "3.0.1",
-            "stoeffel/set-extra": "1.2.3"
+            "stoeffel/set-extra": "1.2.3",
+            "upsiflu/less-ui": "1.0.0"
         },
         "indirect": {
+            "Fresheyeball/elm-return": "7.1.0",
+            "edkelly303/elm-any-type-forms": "5.0.0",
             "elm/bytes": "1.0.8",
             "elm/file": "1.0.5",
             "elm/json": "1.1.3",
             "elm/parser": "1.1.0",
+            "elm/project-metadata-utils": "1.0.2",
+            "elm/random": "1.0.0",
             "elm/regex": "1.0.0",
             "elm/time": "1.0.0",
             "elm/virtual-dom": "1.0.3",
-            "rtfeldman/elm-hex": "1.0.0"
+            "elm-community/easing-functions": "2.0.0",
+            "elm-community/result-extra": "2.4.0",
+            "elm-explorations/test": "2.1.1",
+            "jfmengels/elm-review": "2.13.1",
+            "linuss/smooth-scroll": "1.1.0",
+            "lue-bird/elm-review-single-use-type-vars-end-with-underscore": "2.0.3",
+            "miniBill/elm-unicode": "1.0.3",
+            "pzp1997/assoc-list": "1.0.0",
+            "rtfeldman/elm-hex": "1.0.0",
+            "stil4m/elm-syntax": "7.3.2",
+            "stil4m/structured-writer": "1.0.3",
+            "turboMaCk/non-empty-list-alias": "1.4.0"
         }
     },
     "test-dependencies": {

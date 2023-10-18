@@ -6,17 +6,16 @@ module Multimedia exposing (main)
 
 -}
 
-import Restrictive exposing (Application, application)
-import Restrictive.Layout
-import Restrictive.Layout.Region exposing (Aspect(..))
-import Restrictive.Ui as Ui
-import Ui exposing (Item, Sample(..), Ui, navLink, viewItem)
+import Less
+import Less.Ui as Ui
+import Less.Ui.Html as Ui exposing (Region(..))
+import Ui exposing (Item, Sample(..), Ui, viewItem)
 
 
 {-| -}
-main : Application (List Item) ()
+main : Less.Application (List Item) ()
 main =
-    application
+    Less.application
         { init = ( items, Cmd.none )
         , update = \() model -> ( model, Cmd.none )
         , view = view
@@ -25,13 +24,15 @@ main =
 
 items : List Item
 items =
-    [ { flag = "Restrictive"
+    [ { flag = "Less"
       , category = "Ui library"
       , timeframe = "2022—"
-      , title = "Restrictive"
+      , title = "Less"
       , description =
             """
-For my smaller SPA projects, I packing some abstractions into a UI library, going for <more summary="cohesion"> Aiming to concentrate everyting pertaining to a certain type inside its corresponding model. [Read the Wikipedia\u{00A0}article](https://en.wikipedia.org/wiki/Cohesion%28computer_science%29 "Wikipedia article")</more> and defaults at the expense of power and expressiveness.
+For my smaller SPA projects, I have collected a few useful UI patterns into a library, priorizing <more summary="cohesion"> 
+ Aiming to concentrate everyting pertaining to a certain type inside its corresponding model. [Read the Wikipedia\u{00A0}article](https://en.wikipedia.org/wiki/Cohesion%28computer_science%29 "Wikipedia article")</more> 
+and defaults at the expense of power and expressiveness. This is my first open-source library 🐬
 
 - _Defaults:_ The URL stores the complete UI state. <more summary="_How?_">In contrast to the Elm architecture, `update` and `view` don't receive the URL. Instead, you add predefined Links such as `toggle`, `goTo`, `tab` or `bounce` to differenciate UI (sub)states. This guarantees that when you share a link or your current URL, the receiver will get the same view.</more>
 - _Cohesion:_ The module hierarchy is independent from the layout. <more summary="_How?_">Write `view` functions for your types in the corresponding modules, then give them a place in the global layout. In the diagram below, you can see the default layout with four regions.</more>
@@ -97,9 +98,11 @@ URL: <url>x.y<more summary="/Comp1#square">`Path` and `Fragment` determine which
 <more summary="Progressive Disclosure">By clicking `OK`, you toggle the `edit` flag from the URL, which in turn determines the visibility of the Control Sheet. Such `toggle` links can be nested to implement deep [progressive disclosure](https://www.nngroup.com/articles/progressive-disclosure/).</more>""" ]
                 }
       , info = """
-[Visit my `restrictive` github repo](https://github.com/upsiflu/restrictive)
+- [Visit my `restrictive` github repo](https://github.com/upsiflu/less-ui)
+- [Use the stable version of the library](https://package.elm-lang.org/packages/upsiflu/less-ui/latest)
+- [Check out the demo, a self-explaining walkthrough](https://less-ui.web.app/)
       
-I implemented the clickable headings on this page using my `Restrictive` library. [Browse the Source here](https://github.com/upsiflu/multimedia)"""
+I implemented the clickable headings on this page using my `Less` library. [Browse the Source here](https://github.com/upsiflu/multimedia)"""
       }
     , { flag = "Shell"
       , category = "Project across many media"
@@ -329,7 +332,8 @@ view items_ =
     let
         showTab : String -> Ui -> Ui
         showTab str contents =
-            Restrictive.toggle (String.replace " " "-" str)
+            Ui.toggle
+                (String.replace " " "-" str)
                 |> Ui.with Scene contents
     in
     { body =
@@ -342,6 +346,6 @@ _Flupsi's Interactive Media Portfolio_
 
 """
             ++ List.concatMap viewItem items_
-    , layout = Restrictive.Layout.withClass "Multimedia"
+    , layout = Less.Layout.withClass "Multimedia"
     , title = "Flupsi's multimedia portfolio"
     }
