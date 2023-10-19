@@ -8,7 +8,7 @@ module Multimedia exposing (main)
 
 import Less
 import Less.Ui as Ui
-import Less.Ui.Html as Ui exposing (Region(..))
+import Less.Ui.Html as Html exposing (Region(..))
 import Ui exposing (Item, Sample(..), Ui, viewItem)
 
 
@@ -24,7 +24,7 @@ main =
 
 items : List Item
 items =
-    [ { flag = "Less"
+    [ { fragment = "Less"
       , category = "Ui library"
       , timeframe = "2022—"
       , title = "Less"
@@ -104,7 +104,7 @@ URL: <url>x.y<more summary="/Comp1#square">`Path` and `Fragment` determine which
       
 I implemented the clickable headings on this page using my `Less` library. [Browse the Source here](https://github.com/upsiflu/multimedia)"""
       }
-    , { flag = "Shell"
+    , { fragment = "Shell"
       , category = "Project across many media"
       , timeframe = "2021—"
       , title = "The Shells"
@@ -210,7 +210,7 @@ Open Call
                 }
       , info = """"""
       }
-    , { flag = "MaT"
+    , { fragment = "MaT"
       , category = "Community Lab Series"
       , timeframe = "2021—"
       , title = "Moving across Thresholds"
@@ -250,7 +250,7 @@ But the larges and most interesting task was implementing <more summary="a conte
 
 [Visit the website where lab participants can browse and add traces of their explorations](https://movingAcrossThresholds.com)"""
       }
-    , { flag = "Glossary"
+    , { fragment = "Glossary"
       , category = "Research"
       , timeframe = "2018—21"
       , title = "Bodies experiencing virtual spaces"
@@ -286,7 +286,7 @@ Who is ‘we’, who addresses ‘us’, what is beyond ‘this’ body? Rituals
                 ]
       , info = """[Read my Glossary of UX concepts &#91;pdf&#93;](UX-Glossary.pdf)"""
       }
-    , { flag = "Bombast"
+    , { fragment = "Bombast"
       , category = "Multilingual website"
       , timeframe = "2018"
       , title = "Bombast Duo<single-column/>"
@@ -306,7 +306,7 @@ After more than five years, this site has never needed maintenance.
 
 [Check out the Duo's website in a new tab](https://www.stephaniehanna.de/wp-content/weiseapp2018/weiseapp.html)"""
       }
-    , { flag = "Weise"
+    , { fragment = "Weise"
       , category = "Virtual copy of an interactive artwork"
       , timeframe = "2017"
       , title = "Die Weisen<single-column/>"
@@ -329,23 +329,9 @@ This was my first Javascript-only animation project, and it was a fun and satify
 
 view : List Item -> Ui.Document
 view items_ =
-    let
-        showTab : String -> Ui -> Ui
-        showTab str contents =
-            Ui.toggle
-                (String.replace " " "-" str)
-                |> Ui.with Scene contents
-    in
     { body =
-        Ui.viewMarkdown """
-_Flupsi's Interactive Media Portfolio_
-
-    \u{00A0}
-    \u{00A0}
-    \u{00A0}
-
-"""
-            ++ List.concatMap viewItem items_
-    , layout = Less.Layout.withClass "Multimedia"
+        Ui.viewHeading ++ List.concatMap viewItem items_
+    , layout = Html.layout
     , title = "Flupsi's multimedia portfolio"
     }
+        |> Less.mapDocument identity

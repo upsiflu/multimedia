@@ -1,10 +1,8 @@
-module Ui exposing (Document, Item, Sample(..), Ui, markdown, viewItem, viewMarkdown)
+module Ui exposing (Document, Item, Sample(..), Ui, markdown, viewHeading, viewItem)
 
 import Html exposing (Html)
 import Html.Attributes as Attr
-import Html.Keyed as Keyed
 import Less as Less
-import Less.Link exposing (Flag)
 import Less.Ui as Ui
 import Less.Ui.Html as Ui exposing (Region(..))
 import Markdown.Html
@@ -25,7 +23,7 @@ type alias Document =
 
 
 type alias Item =
-    { fragment : Flag
+    { fragment : String
     , category : String
     , timeframe : String
     , title : String
@@ -33,11 +31,6 @@ type alias Item =
     , sample : Sample
     , info : String
     }
-
-
-viewMarkdown : String -> Ui
-viewMarkdown =
-    markdown >> List.concatMap (Tuple.pair "" >> Ui.html)
 
 
 navLink : String -> Ui -> Ui
@@ -55,30 +48,44 @@ viewItem { fragment, category, timeframe, title, description, sample, info } =
         [ Ui.html
             [ Html.span [ Attr.class "category" ] [ Html.text category ]
             , Html.span [ Attr.class "timeframe" ] (markdown timeframe)
-            , Ui.wrap (\h -> [ ( "anchor", Html.a [ Attr.href ("#" ++ fragment) ] [ Keyed.node "h1" [] h ] ) ]) (List.concatMap Ui.html (markdown title |> List.map (Tuple.pair "")))
             ]
-        , markdown description |> Html.div [ Attr.class "description" ] |> Tuple.pair "description" |> Ui.html
+        , Ui.goTo []
+            { destination = "#" ++ fragment
+            , inHeader = False
+            , label = [ Html.h1 [] (markdown title) ]
+            }
+            []
+        , Ui.html [ Html.div [ Attr.class "description" ] (markdown description) ]
         , viewSample sample
-        , markdown info |> Html.div [ Attr.class "info" ]
+        , Ui.html [ Html.div [ Attr.class "info" ] (markdown info) ]
         ]
         ++ navLink fragment
-            (Ui.node "center-me" [ Attr.attribute "hash" fragment ])
+            (Ui.block "center-me" [ Attr.attribute "hash" fragment ] [])
 
 
-viewWhenHash : Flag -> Ui -> Ui
-viewWhenHash flag ui =
-    Ui.byLocation
-        (\( _, hash ) ->
-            if hash == Just flag then
-                ui
-
-            else
-                []
-        )
+viewWhenHash : String -> Ui -> Ui
+viewWhenHash hash =
+    Ui.goTo []
+        { destination = "#" ++ hash
+        , inHeader = False
+        , label = []
+        }
 
 
 
 --|> Ui.with Info (Ui.foliage (List.indexedMap (\i -> Tuple.pair (String.fromInt i)) (markdown info)))
+
+
+viewHeading : Ui
+viewHeading =
+    Ui.html (markdown """
+_Flupsi's Interactive Media Portfolio_
+
+    \u{00A0}
+    \u{00A0}
+    \u{00A0}
+
+""")
 
 
 type Sample
@@ -96,19 +103,23 @@ type Sample
         , right : List String
         , bottom : List String
         }
-    | Carousel Flag (List String)
+    | Carousel String (List String)
 
 
 viewSample : Sample -> Ui
 viewSample sample =
     let
-        addBeforeAndAfter : List ( String, Html msg ) -> List ( String, Html msg )
+        addBeforeAndAfter : Ui -> Ui
         addBeforeAndAfter items =
-            ( "before", Html.div [ Attr.class "before" ] [] ) :: items ++ [ ( "after", Html.div [ Attr.class "after" ] [] ) ]
+            Ui.block "div" [ Attr.class "before" ] [] ++ items ++ Ui.block "div" [ Attr.class "after" ] []
 
-        flex : String -> List ( String, Html msg ) -> List ( String, Html msg )
-        flex direction items =
-            [ ( "", Keyed.node "div" [ Attr.class direction ] items ) ]
+        flexRow : List (Html.Attribute ()) -> Ui -> Ui
+        flexRow attrs =
+            Ui.block "div" (Attr.class "row" :: attrs)
+
+        flexColumn : List (Html.Attribute ()) -> Ui -> Ui
+        flexColumn attrs =
+            Ui.block "div" (Attr.class "column" :: attrs)
 
         image : { a | filename : String, alt : String } -> ( String, Html msg )
         image { alt, filename } =
@@ -126,35 +137,37 @@ viewSample sample =
             List.concatMap
                 (\legend ->
                     Ui.html
-                        ( ""
-                        , Html.div [ Attr.class "legend" ]
+                        [ Html.div [ Attr.class "legend" ]
                             [ Html.div [ Attr.class "legend-container" ]
                                 (markdown legend)
                             ]
-                        )
+                        ]
                 )
     in
     case sample of
         Sample md ->
-            Ui.html ( "sample", Html.div [ Attr.class "sample" ] (markdown md) )
+            Ui.html [ Html.div [ Attr.class "sample" ] (markdown md) ]
 
         Diagram { left, center, right, bottom } ->
-            Ui.wrap (flex "sample row")
-                (Ui.wrap (addBeforeAndAfter >> flex "column left") (wrapLegends left)
-                    ++ Ui.wrap (flex "column center") (List.concatMap (Tuple.pair "center" >> Ui.html) (markdown center) ++ Ui.wrap (flex "row") (wrapLegends bottom))
-                    ++ Ui.wrap (addBeforeAndAfter >> flex "column right") (wrapLegends right)
+            flexRow [ Attr.class "sample" ]
+                (flexColumn [ Attr.class "left" ]
+                    (addBeforeAndAfter (wrapLegends left))
+                    ++ flexColumn [ Attr.class "center" ]
+                        (Ui.html (markdown center) ++ flexRow [] (wrapLegends bottom))
+                    ++ flexColumn [ Attr.class "right" ]
+                        (addBeforeAndAfter (wrapLegends right))
                 )
 
         Video ->
-            Ui.singleton
+            []
 
         Inclusion { left, source, right, bottom } ->
-            Ui.wrap (flex "sample row")
-                (Ui.wrap (addBeforeAndAfter >> flex "column left") (wrapLegends left)
-                    ++ Ui.wrap (flex "column center")
+            flexRow [ Attr.class "sample" ]
+                (flexColumn [ Attr.class "left" ]
+                    (addBeforeAndAfter (wrapLegends left))
+                    ++ flexColumn [ Attr.class "center" ]
                         (Ui.html
-                            ( "inclusion"
-                            , Html.node "silence-console"
+                            [ Html.node "silence-console"
                                 []
                                 [ Html.node "iframe"
                                     [ Attr.src source
@@ -163,52 +176,45 @@ viewSample sample =
                                     ]
                                     []
                                 ]
-                            )
-                            ++ Ui.wrap (flex "row") (wrapLegends bottom)
+                            ]
+                            ++ flexRow [] (wrapLegends bottom)
                         )
-                    ++ Ui.wrap (addBeforeAndAfter >> flex "column right") (wrapLegends right)
+                    ++ flexColumn [ Attr.class "right" ]
+                        (addBeforeAndAfter (wrapLegends right))
                 )
 
-        Carousel flag entries ->
+        Carousel fragment entries ->
             List.indexedMap
                 (\i entry ->
                     let
-                        id : Flag
+                        id : String
                         id =
-                            flag ++ String.fromInt i
+                            fragment ++ String.fromInt i
 
                         link : Ui
                         link =
-                            Less.goTo ( Nothing, Just id )
+                            Ui.goTo []
+                                { destination = "#" ++ id
+                                , inHeader = False
+                                , label = markdown id
+                                }
+                                []
 
                         centerer : Ui
                         centerer =
-                            Ui.html ( "centering", Html.node "center-me-horizontally" [] [] )
+                            Ui.block "center-me-horizontally" [] []
                                 |> viewWhenHash id
 
                         content : Ui
                         content =
-                            viewMarkdown entry
+                            Ui.html (markdown entry)
                     in
-                    link
-                        ++ centerer
-                        ++ content
-                        |> Ui.wrap
-                            (\entry_ ->
-                                [ ( "entry", Keyed.node "div" [ Attr.class "entry" ] entry_ ) ]
-                            )
+                    Ui.block "div" [ Attr.class "entry" ] (link ++ centerer ++ content)
                 )
                 entries
                 |> List.concat
-                |> Ui.wrap
-                    (\entries_ ->
-                        [ ( "carousel" ++ flag
-                          , Html.div
-                                [ Attr.class "carousel sample" ]
-                                [ Keyed.node "div" [ Attr.class "scrolling" ] entries_ ]
-                          )
-                        ]
-                    )
+                |> Ui.block "div" [ Attr.class "scrolling" ]
+                |> Ui.block "div" [ Attr.class "carousel sample" ]
 
 
 
