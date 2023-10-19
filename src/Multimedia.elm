@@ -8,7 +8,7 @@ module Multimedia exposing (main)
 
 import Less
 import Less.Ui as Ui
-import Less.Ui.Html as Html exposing (Region(..))
+import Less.Ui.Html as Html exposing (Region(..), layout)
 import Ui exposing (Item, Sample(..), Ui, viewItem)
 
 
@@ -73,7 +73,7 @@ The editing controls are automatically derived from the model (w.i.p.)</more>"""
 <highlight/>
 
 '>
-![](restrictive.png)
+![](less.png)
 
 </over>
 
@@ -330,8 +330,11 @@ This was my first Javascript-only animation project, and it was a fun and satify
 view : List Item -> Ui.Document
 view items_ =
     { body =
-        Ui.viewHeading ++ List.concatMap viewItem items_
-    , layout = Html.layout
+        Ui.viewHeading ++ Ui.inRegion Scene (List.concatMap viewItem items_)
+    , layout =
+        { layout
+            | arrange = Ui.arrangeOverDefaultRegions
+        }
     , title = "Flupsi's multimedia portfolio"
     }
         |> Less.mapDocument identity

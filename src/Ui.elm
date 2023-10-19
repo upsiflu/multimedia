@@ -1,7 +1,8 @@
-module Ui exposing (Document, Item, Sample(..), Ui, markdown, viewHeading, viewItem)
+module Ui exposing (Document, Item, Sample(..), Ui, arrangeOverDefaultRegions, markdown, viewHeading, viewItem)
 
 import Html exposing (Html)
 import Html.Attributes as Attr
+import Html.Lazy
 import Less as Less
 import Less.Ui as Ui
 import Less.Ui.Html as Ui exposing (Region(..))
@@ -86,6 +87,7 @@ _Flupsi's Interactive Media Portfolio_
     \u{00A0}
 
 """)
+        |> Ui.inRegion Scene
 
 
 type Sample
@@ -361,3 +363,30 @@ viewHtmlLegend summary wrapper popup =
                 :: popup
             )
         ]
+
+
+{-|
+
+    Lays out a traditional application layout with a sticky `Header`,
+    scrolling `Scene`, and both `Control` and `Info` fixed to the bottom.
+
+-}
+arrangeOverDefaultRegions : { header : List (Html msg), region : Region -> List (Html msg) } -> List (Html msg)
+arrangeOverDefaultRegions rendered =
+    [ Html.Lazy.lazy2
+        Html.nav
+        [ Attr.class "Multimedia handle", Attr.style "position" "sticky" ]
+        rendered.header
+    , Html.Lazy.lazy2
+        Html.main_
+        [ Attr.class "scene" ]
+        (rendered.region Scene)
+    , Html.Lazy.lazy2
+        Html.div
+        [ Attr.class "info", Attr.style "position" "fixed", Attr.style "bottom" "0", Attr.style "right" "0" ]
+        (rendered.region Info)
+    , Html.Lazy.lazy2
+        Html.div
+        [ Attr.class "control", Attr.style "position" "fixed", Attr.style "bottom" "0" ]
+        (rendered.region Control)
+    ]
