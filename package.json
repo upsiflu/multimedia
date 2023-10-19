@@ -3,12 +3,11 @@
   "type": "module",
   "name": "multimedia",
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "postinstall": "elm-tooling install",
-    "start-without-documentation": "run-pty % elm-watch hot % pnpm esbuild -- --serve=9000 --servedir=public % node dev-server.js 9000",
+    "start-without-documentation": "run-pty % elm-watch hot % npm esbuild -- --serve=9000 --servedir=public % node dev-server.js 9000",
     "start": "run-pty run-pty.json",
     "try-production": "run-pty % esbuild --serve=9000 --servedir=public % node dev-server.js 9000",
-    "build": "elm-watch make --optimize && pnpm esbuild",
+    "build": "elm-watch make --optimize && npm esbuild",
     "esbuild": "esbuild initElm.ts --bundle --outdir=public/build --public-path=/build/ --loader:.svg=file --loader:.woff2=file --loader:.mp3=file"
   },
   "devDependencies": {
