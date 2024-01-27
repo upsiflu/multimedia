@@ -19,7 +19,7 @@
             "elm-community/string-extra": "4.0.1",
             "mdgriffith/elm-markup": "3.0.1",
             "stoeffel/set-extra": "1.2.3",
-            "upsiflu/less-ui": "1.0.0"
+            "upsiflu/less-ui": "2.0.0"
         },
         "indirect": {
             "Fresheyeball/elm-return": "7.1.0",
