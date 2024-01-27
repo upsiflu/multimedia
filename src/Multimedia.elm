@@ -31,7 +31,7 @@ items =
       , description =
             """
 For my smaller SPA projects, I have collected a few useful UI patterns into a library, priorizing <more summary="cohesion"> 
- Aiming to concentrate everyting pertaining to a certain type inside its corresponding model. [Read the Wikipedia\u{00A0}article](https://en.wikipedia.org/wiki/Cohesion%28computer_science%29 "Wikipedia article")</more> 
+ Aiming to concentrate everything pertaining to a certain type inside its corresponding model. [Read the Wikipedia\u{00A0}article](https://en.wikipedia.org/wiki/Cohesion%28computer_science%29 "Wikipedia article")</more> 
 and defaults at the expense of power and expressiveness. This is my first open-source library 🐬
 
 - _Defaults:_ The URL stores the complete UI state. <more summary="_How?_">In contrast to the Elm architecture, `update` and `view` don't receive the URL. Instead, you add predefined Links such as `toggle`, `goTo`, `tab` or `bounce` to differenciate UI (sub)states. This guarantees that when you share a link or your current URL, the receiver will get the same view.</more>
@@ -110,7 +110,7 @@ I implemented the clickable headings on this page using my `Less` library. [Brow
       , title = "The Shells"
       , description =
             """
-This figure inspires a growing network of activsts around the world to re-examine the <more summary="_surfaces of imagination_"> Where are body images created? Clothes, screens, sculptures, image-boards, magazines, film and genders are examples of what we call _Shells_, hybrid hulls holding collages of imaginary bodies that we edit and inhabit collectively. </more>. In workshops, congresses and virtual landscapes, we become future queer and deviant bodies."""
+This figure inspires a growing network of activsts around the world to re-examine the <more summary="_surfaces of imagination_">. Where are body images created? Clothes, screens, sculptures, image-boards, magazines, film and genders are examples of what we call _Shells_, hybrid hulls holding collages of imaginary bodies that we edit and inhabit collectively. </more>. In workshops, congresses and virtual landscapes, we become future queer and deviant bodies."""
       , sample =
             Diagram
                 { left =
@@ -121,7 +121,7 @@ This figure inspires a growing network of activsts around the world to re-examin
 <more summary='Lucha\u{00A0}Lugar '>
 <alternate/>
 
-Under the calcic guise of academic research, Michelle and Padme are practicing imagination against the genocide, inspired by the Zapatista maxim 'Lucha como Lugar' (The struggle is a place). Fighting against the hegemony of extractivism, our colonised bodies are in diverse situations and frontlines, but the struggle connects in a shared imaginary.
+Under the calcic guise of academic research, Michelle and Padme are practicing imagination against the epistemicide, inspired by the Zapatista maxim 'Lucha como Lugar' (The struggle is a place). Fighting against the hegemony of extractivism, our colonised bodies are in diverse situations and frontlines, but the struggle connects in a shared imaginary.
 
 </more>
 
@@ -215,7 +215,7 @@ Open Call
       , timeframe = "2021—"
       , title = "Moving across Thresholds"
       , description =
-            """For Renae Shadler's lab series, I am creating a website/archive and a newsletter and social media campaign. In this video I walk through some of our considerations and decisions:"""
+            """For Renae Shadler's lab series, I am creating a website/archive and a newsletter and social media campaign. Here I walk through some of our considerations and decisions:"""
       , sample =
             Carousel "MaT"
                 [ """![](mat-layout.png)
