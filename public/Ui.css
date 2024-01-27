@@ -486,3 +486,8 @@ center-me {
 #Restrictive .overlay:has(.highlight) {
     mix-blend-mode: difference;
 }
+
+
+*>style {
+    display: none;
+}

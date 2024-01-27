@@ -3,7 +3,7 @@ module Ui exposing (Document, Item, Sample(..), Ui, arrangeOverDefaultRegions, m
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Lazy
-import Less as Less
+import Less
 import Less.Ui as Ui
 import Less.Ui.Html as Ui exposing (Region(..))
 import Markdown.Html
@@ -43,13 +43,16 @@ navLink fragment =
         }
 
 
+span : List (Html.Attribute ()) -> List (Html ()) -> Ui.Html Region () ()
+span attr =
+    Ui.html >> Ui.node "span" attr
+
+
 viewItem : Item -> Ui
 viewItem { fragment, category, timeframe, title, description, sample, info } =
-    (List.concat >> Ui.block "ul" [ Attr.id fragment ])
-        [ Ui.html
-            [ Html.span [ Attr.class "category" ] [ Html.text category ]
-            , Html.span [ Attr.class "timeframe" ] (markdown timeframe)
-            ]
+    (List.concat >> Ui.node "ul" [ Attr.id fragment ])
+        [ span [ Attr.class "category" ] [ Html.text category ]
+        , span [ Attr.class "timeframe" ] (markdown timeframe)
         , Ui.goTo []
             { destination = "#" ++ fragment
             , inHeader = False
@@ -61,7 +64,7 @@ viewItem { fragment, category, timeframe, title, description, sample, info } =
         , Ui.html [ Html.div [ Attr.class "info" ] (markdown info) ]
         ]
         ++ navLink fragment
-            (Ui.block "center-me" [ Attr.attribute "hash" fragment ] [])
+            (Ui.node "center-me" [ Attr.attribute "hash" fragment ] [])
 
 
 viewWhenHash : String -> Ui -> Ui
@@ -113,15 +116,15 @@ viewSample sample =
     let
         addBeforeAndAfter : Ui -> Ui
         addBeforeAndAfter items =
-            Ui.block "div" [ Attr.class "before" ] [] ++ items ++ Ui.block "div" [ Attr.class "after" ] []
+            Ui.node "div" [ Attr.class "before" ] [] ++ items ++ Ui.node "div" [ Attr.class "after" ] []
 
         flexRow : List (Html.Attribute ()) -> Ui -> Ui
         flexRow attrs =
-            Ui.block "div" (Attr.class "row" :: attrs)
+            Ui.node "div" (Attr.class "row" :: attrs)
 
         flexColumn : List (Html.Attribute ()) -> Ui -> Ui
         flexColumn attrs =
-            Ui.block "div" (Attr.class "column" :: attrs)
+            Ui.node "div" (Attr.class "column" :: attrs)
 
         image : { a | filename : String, alt : String } -> ( String, Html msg )
         image { alt, filename } =
@@ -168,17 +171,15 @@ viewSample sample =
                 (flexColumn [ Attr.class "left" ]
                     (addBeforeAndAfter (wrapLegends left))
                     ++ flexColumn [ Attr.class "center" ]
-                        (Ui.html
-                            [ Html.node "silence-console"
-                                []
-                                [ Html.node "iframe"
-                                    [ Attr.src source
-                                    , Attr.attribute "is" "silent-iframe"
-                                    , Attr.attribute "loading" "lazy"
-                                    ]
-                                    []
+                        (Ui.node "silence-console"
+                            []
+                            (Ui.node "iframe"
+                                [ Attr.src source
+                                , Attr.attribute "is" "silent-iframe"
+                                , Attr.attribute "loading" "lazy"
                                 ]
-                            ]
+                                (Ui.html [ Html.text "" ])
+                            )
                             ++ flexRow [] (wrapLegends bottom)
                         )
                     ++ flexColumn [ Attr.class "right" ]
@@ -204,19 +205,19 @@ viewSample sample =
 
                         centerer : Ui
                         centerer =
-                            Ui.block "center-me-horizontally" [] []
+                            Ui.node "center-me-horizontally" [] []
                                 |> viewWhenHash id
 
                         content : Ui
                         content =
                             Ui.html (markdown entry)
                     in
-                    Ui.block "div" [ Attr.class "entry" ] (link ++ centerer ++ content)
+                    Ui.node "div" [ Attr.class "entry" ] (link ++ centerer ++ content)
                 )
                 entries
                 |> List.concat
-                |> Ui.block "div" [ Attr.class "scrolling" ]
-                |> Ui.block "div" [ Attr.class "carousel sample" ]
+                |> Ui.node "div" [ Attr.class "scrolling" ]
+                |> Ui.node "div" [ Attr.class "carousel sample" ]
 
 
 

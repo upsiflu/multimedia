@@ -9,7 +9,7 @@ module Multimedia exposing (main)
 import Less
 import Less.Ui as Ui
 import Less.Ui.Html as Html exposing (Region(..), layout)
-import Ui exposing (Item, Sample(..), Ui, viewItem)
+import Ui exposing (Item, Sample(..))
 
 
 {-| -}
@@ -330,7 +330,9 @@ This was my first Javascript-only animation project, and it was a fun and satify
 view : List Item -> Ui.Document
 view items_ =
     { body =
-        Ui.viewHeading ++ Ui.inRegion Scene (List.concatMap viewItem items_)
+        Html.animations
+            ++ Ui.viewHeading
+            ++ Ui.inRegion Scene (List.concatMap Ui.viewItem items_)
     , layout =
         { layout
             | arrange = Ui.arrangeOverDefaultRegions
