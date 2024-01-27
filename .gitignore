@@ -1,5 +1,7 @@
 # Distribution
 build
+public/build
+index.html
 
 # Elm
 elm-stuff
