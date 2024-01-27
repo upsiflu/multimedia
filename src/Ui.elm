@@ -107,6 +107,7 @@ type Sample
         , source : String
         , right : List String
         , bottom : List String
+        , isSilent : Bool
         }
     | Carousel String (List String)
 
@@ -166,22 +167,27 @@ viewSample sample =
         Video ->
             []
 
-        Inclusion { left, source, right, bottom } ->
+        Inclusion { left, source, right, bottom, isSilent } ->
+            let
+                iframe =
+                    Ui.node "iframe"
+                        [ Attr.src source
+                        , Attr.attribute "is" "silent-iframe"
+                        , Attr.attribute "loading" "lazy"
+                        ]
+                        (Ui.html [ Html.text "" ])
+                        |> (if isSilent then
+                                Ui.node "silence-console" []
+
+                            else
+                                identity
+                           )
+            in
             flexRow [ Attr.class "sample" ]
                 (flexColumn [ Attr.class "left" ]
                     (addBeforeAndAfter (wrapLegends left))
                     ++ flexColumn [ Attr.class "center" ]
-                        (Ui.node "silence-console"
-                            []
-                            (Ui.node "iframe"
-                                [ Attr.src source
-                                , Attr.attribute "is" "silent-iframe"
-                                , Attr.attribute "loading" "lazy"
-                                ]
-                                (Ui.html [ Html.text "" ])
-                            )
-                            ++ flexRow [] (wrapLegends bottom)
-                        )
+                        (iframe ++ flexRow [] (wrapLegends bottom))
                     ++ flexColumn [ Attr.class "right" ]
                         (addBeforeAndAfter (wrapLegends right))
                 )

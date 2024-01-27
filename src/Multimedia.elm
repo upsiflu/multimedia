@@ -298,6 +298,7 @@ Who is ‘we’, who addresses ‘us’, what is beyond ‘this’ body? Rituals
                 , source = "https://bombastDuo.com"
                 , right = []
                 , bottom = []
+                , isSilent = True
                 }
       , info = """
 Kasia and Elena speak four languages, so I created a language switcher that simply toggles the visibility of paragraphs based on the chosen language, with a fallback to english.
@@ -318,6 +319,7 @@ After more than five years, this site has never needed maintenance.
                 , source = "https://www.stephaniehanna.de/wp-content/weiseapp2018/weiseapp.html"
                 , right = []
                 , bottom = []
+                , isSilent = False
                 }
       , info = """
 This was my first Javascript-only animation project, and it was a fun and satifying job because the artwork is touching, the scope was very clear, and I had the resources to document and test the source code thoroughly and to learn so many things.
