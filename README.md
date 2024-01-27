@@ -2,17 +2,15 @@
 
 An ever-changing showcase of my recent experiments and works in web, collage and engaging experience between the media.
 
-**Install the live server:**
+**Install the live server and dependencies:**
 
 ```shell
-npm add -g elm-watch
 npm i
 ```
 
 **Toy around:**
 
 ```shell
-npm add -g elm-doc-preview
 npm start
 ```
 

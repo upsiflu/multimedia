@@ -11,6 +11,8 @@
     "esbuild": "esbuild initElm.ts --bundle --outdir=public/build --public-path=/build/ --loader:.svg=file --loader:.woff2=file --loader:.mp3=file"
   },
   "devDependencies": {
+    "elm-doc-preview": "^5.0.5",
+    "elm-review": "^2.10.3",
     "elm-tooling": "^1.15.0",
     "elm-watch": "1.1.2",
     "esbuild": "0.17.4",
