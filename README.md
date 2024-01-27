@@ -4,13 +4,13 @@ An ever-changing showcase of my recent experiments and works in web, collage and
 
 **Install the live server and dependencies:**
 
-```shell
+```sh
 npm i
 ```
 
 **Toy around:**
 
-```shell
+```sh
 npm start
 ```
 
@@ -18,6 +18,12 @@ npm start
 1. In that browser tab, you can activate the **Elm debugger** by clicking the `elm-watch` menu in the bottom left corner
 1. Click on the `elm-watch hot` buttons in your terminal output to check for errors
 1. Read [the live docs][docs-server]
+
+**Deploy**
+
+```sh
+npm run deploy
+```
 
 **Have a lot of fun <3**
 
